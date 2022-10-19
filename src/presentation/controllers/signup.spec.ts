@@ -18,11 +18,6 @@ const makeEmailValidator = (): EmailValidatorProtocol => {
 };
 
 const makeSut = (): SutProtocol => {
-  class EmailvalidatorStub implements EmailValidatorProtocol {
-    isValid(email: string): boolean {
-      return true;
-    }
-  }
   const emailValidatorStub = makeEmailValidator();
   const sut = new SignUpController(emailValidatorStub);
   return {
@@ -109,6 +104,24 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
     expect(httpResponse.body).toEqual(new InvalidParamError('email'));
+  });
+
+  it('should return 400 if an password confirmation fails', () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'invalid_email@email.com',
+        password: 'any_password',
+        passwordConfirmation: 'invalid_password',
+      },
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.body).toEqual(
+      new InvalidParamError('passwordConfirmation'),
+    );
   });
 
   it('should call EmailValidator with correct email', () => {
