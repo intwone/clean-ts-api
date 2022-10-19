@@ -3,12 +3,12 @@ import { MissingParamError } from '../errors/missing-param-error';
 import { EmailValidatorProtocol } from '../protocols/email-validator';
 import { SignUpController } from './signup';
 
-interface SutProtocols {
+interface SutProtocol {
   sut: SignUpController;
   emailValidatorStub: EmailValidatorProtocol;
 }
 
-const makeSut = (): SutProtocols => {
+const makeSut = (): SutProtocol => {
   class EmailvalidatorStub implements EmailValidatorProtocol {
     isValid(email: string): boolean {
       return true;
