@@ -20,11 +20,19 @@ export class SignUpController implements ControllerProtocol {
         'email',
       ];
       requiredFields.forEach(field => {
-        if (!httpRequest.body[field])
+        if (!httpRequest.body[field]) {
           response = badRequest(new MissingParamError(field));
+        }
       });
+      if (response) return response;
+      if (httpRequest.body.password !== httpRequest.body.passwordConfirmation) {
+        response = badRequest(new InvalidParamError('passwordConfirmation'));
+        return response;
+      }
       const isValidEmail = this.emailValidator.isValid(httpRequest.body.email);
-      if (!isValidEmail) return badRequest(new InvalidParamError('email'));
+      if (!isValidEmail) {
+        return badRequest(new InvalidParamError('email'));
+      }
       return response;
     } catch (error) {
       return serverError();
