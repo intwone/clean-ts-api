@@ -1,5 +1,5 @@
 import { HttpRequestProtocol, HttpResponseProtocol } from './http';
 
 export interface ControllerProtocol {
-  handle: (httpRequest: HttpRequestProtocol) => HttpResponseProtocol;
+  handle: (httpRequest: HttpRequestProtocol) => Promise<HttpResponseProtocol>;
 }

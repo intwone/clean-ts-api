@@ -7,5 +7,5 @@ export interface AddAccountModelProtocol {
 }
 
 export interface AddAccountProtocol {
-  add: (account: AddAccountModelProtocol) => AccountModelProtocol;
+  add: (account: AddAccountModelProtocol) => Promise<AccountModelProtocol>;
 }

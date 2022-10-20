@@ -14,7 +14,9 @@ export class SignUpController implements ControllerProtocol {
     private readonly addAccount: AddAccountProtocol,
   ) {}
 
-  handle(httpRequest: HttpRequestProtocol): HttpResponseProtocol {
+  async handle(
+    httpRequest: HttpRequestProtocol,
+  ): Promise<HttpResponseProtocol> {
     try {
       let response!: HttpResponseProtocol;
       const requiredFields = [
@@ -38,7 +40,7 @@ export class SignUpController implements ControllerProtocol {
       if (!isValidEmail) {
         return badRequest(new InvalidParamError('email'));
       }
-      const account = this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password,
