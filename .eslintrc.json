@@ -16,6 +16,13 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "camelcase": "off",
+    "max-classes-per-file": "off",
+    "import/prefer-default-export": "off",
+    "no-console": "off",
+    "no-useless-constructor": "off",
+    "no-promise-executor-return": "off",
+    "class-methods-use-this": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "prettier/prettier": "error",
     "import/extensions": [
       "off",
