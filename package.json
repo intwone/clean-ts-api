@@ -4,13 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --passWithNoTests --watch",
-    "test:staged": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:unit": "npm test -- --watch -c jest-unit-config.js",
+    "test:integration": "npm test -- --watch -c jest-integration-config.js",
+    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test:staged": "npm test -- --findRelatedTests",
+    "test:ci": "npm test -- --coverage",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix",
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "keywords": [],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run test:ci"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint 'src/**' --fix",
+      "npm run test:staged"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {

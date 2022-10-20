@@ -47,6 +47,7 @@ export class SignUpController implements ControllerProtocol {
       });
       return success(account);
     } catch (error) {
+      console.error(error);
       return serverError();
     }
   }
