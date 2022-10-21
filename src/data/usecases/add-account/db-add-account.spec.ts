@@ -23,9 +23,7 @@ const makeEncrypter = () => {
 
 const makeAddAccountRepository = (): AddAccountRepositoryProtocol => {
   class AddAccountRepositoryStub implements AddAccountRepositoryProtocol {
-    async add(
-      accountData: AddAccountModelProtocol,
-    ): Promise<AccountModelProtocol> {
+    async add(accountData: AddAccountModelProtocol): Promise<AccountModelProtocol> {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
@@ -65,11 +63,7 @@ describe('DbAddaccount Usecase', () => {
 
   it('should throw an exception if Encrypter throws', async () => {
     const { sut, encrypterStub } = makeSut();
-    jest
-      .spyOn(encrypterStub, 'encrypt')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+    jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
     const accountData = {
       name: 'valid_name',
       email: 'valid@mail.com',
@@ -101,9 +95,7 @@ describe('DbAddaccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     jest
       .spyOn(addAccountRepositoryStub, 'add')
-      .mockReturnValueOnce(
-        new Promise((resolve, reject) => reject(new Error())),
-      );
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
     const accountData = {
       name: 'valid_name',
       email: 'valid@mail.com',

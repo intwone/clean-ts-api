@@ -12,9 +12,7 @@ export class DbAddAccount implements AddAccountProtocol {
     private readonly addAccountRepository: AddAccountRepositoryProtocol,
   ) {}
 
-  async add(
-    accountData: AddAccountModelProtocol,
-  ): Promise<AccountModelProtocol> {
+  async add(accountData: AddAccountModelProtocol): Promise<AccountModelProtocol> {
     const hashedPassword = await this.encrypter.encrypt(accountData.password);
     const account = await this.addAccountRepository.add({
       ...accountData,

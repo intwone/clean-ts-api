@@ -14,17 +14,10 @@ export class SignUpController implements ControllerProtocol {
     private readonly addAccount: AddAccountProtocol,
   ) {}
 
-  async handle(
-    httpRequest: HttpRequestProtocol,
-  ): Promise<HttpResponseProtocol> {
+  async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
     try {
       let response!: HttpResponseProtocol;
-      const requiredFields = [
-        'name',
-        'password',
-        'passwordConfirmation',
-        'email',
-      ];
+      const requiredFields = ['name', 'password', 'passwordConfirmation', 'email'];
       requiredFields.forEach(field => {
         if (!httpRequest.body[field]) {
           response = badRequest(new MissingParamError(field));
