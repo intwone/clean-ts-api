@@ -16,12 +16,10 @@ export class DbAddAccount implements AddAccountProtocol {
     accountData: AddAccountModelProtocol,
   ): Promise<AccountModelProtocol> {
     const hashedPassword = await this.encrypter.encrypt(accountData.password);
-    await this.addAccountRepository.add({
+    const account = await this.addAccountRepository.add({
       ...accountData,
       password: hashedPassword,
     });
-    return new Promise(resolve =>
-      resolve({ email: '', id: '', name: '', password: '' }),
-    );
+    return account;
   }
 }
