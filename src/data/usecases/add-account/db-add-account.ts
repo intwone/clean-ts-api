@@ -1,3 +1,4 @@
+import { AddAccountRepositoryProtocol } from '../../protocols/add-account-repository';
 import {
   AccountModelProtocol,
   AddAccountModelProtocol,
@@ -6,10 +7,19 @@ import {
 } from './db-add-account-protocols';
 
 export class DbAddAccount implements AddAccountProtocol {
-  constructor(private readonly encrypter: EncrypterProtocol) {}
+  constructor(
+    private readonly encrypter: EncrypterProtocol,
+    private readonly addAccountRepository: AddAccountRepositoryProtocol,
+  ) {}
 
-  async add(account: AddAccountModelProtocol): Promise<AccountModelProtocol> {
-    await this.encrypter.encrypt(account.password);
+  async add(
+    accountData: AddAccountModelProtocol,
+  ): Promise<AccountModelProtocol> {
+    const hashedPassword = await this.encrypter.encrypt(accountData.password);
+    await this.addAccountRepository.add({
+      ...accountData,
+      password: hashedPassword,
+    });
     return new Promise(resolve =>
       resolve({ email: '', id: '', name: '', password: '' }),
     );
