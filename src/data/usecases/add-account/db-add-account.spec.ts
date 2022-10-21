@@ -1,9 +1,15 @@
 import { DbAddAccount } from './db-add-account';
-import { EncrypterProtocol } from './db-add-account-protocols';
+import {
+  AccountModelProtocol,
+  AddAccountModelProtocol,
+  AddAccountRepositoryProtocol,
+  EncrypterProtocol,
+} from './db-add-account-protocols';
 
 interface SutProtocol {
   sut: DbAddAccount;
   encrypterStub: EncrypterProtocol;
+  addAccountRepositoryStub: AddAccountRepositoryProtocol;
 }
 
 const makeEncrypter = () => {
@@ -15,12 +21,31 @@ const makeEncrypter = () => {
   return new EncryperStub();
 };
 
+const makeAddAccountRepository = (): AddAccountRepositoryProtocol => {
+  class AddAccountRepositoryStub implements AddAccountRepositoryProtocol {
+    async add(
+      accountData: AddAccountModelProtocol,
+    ): Promise<AccountModelProtocol> {
+      const fakeAccount = {
+        id: 'valid_id',
+        name: 'valid_name',
+        email: 'valid@mail.com',
+        password: 'hashed_password',
+      };
+      return new Promise(resolve => resolve(fakeAccount));
+    }
+  }
+  return new AddAccountRepositoryStub();
+};
+
 const makeSut = (): SutProtocol => {
   const encrypterStub = makeEncrypter();
-  const sut = new DbAddAccount(encrypterStub);
+  const addAccountRepositoryStub = makeAddAccountRepository();
+  const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub);
   return {
     sut,
     encrypterStub,
+    addAccountRepositoryStub,
   };
 };
 
@@ -53,5 +78,22 @@ describe('DbAddaccount Usecase', () => {
     const promise = sut.add(accountData);
 
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut();
+    const addSpy = jest.spyOn(addAccountRepositoryStub, 'add');
+    const accountData = {
+      name: 'valid_name',
+      email: 'valid@mail.com',
+      password: 'valid_password',
+    };
+    await sut.add(accountData);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'valid_name',
+      email: 'valid@mail.com',
+      password: 'hashed_password',
+    });
   });
 });
