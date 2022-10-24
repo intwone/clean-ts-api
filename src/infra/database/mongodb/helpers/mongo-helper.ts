@@ -1,16 +1,20 @@
 import { MongoClient } from 'mongodb';
 
-export const MongoHelper = {
-  client: null as unknown as MongoClient,
+export class MongoHelper {
+  public static client: MongoClient | null = null;
 
-  connect: async (uri: string): Promise<void> => {
-    this.client = await MongoClient.connect(uri, {
-      useNewUrlParse: true,
-      useUnifiedTopology: true,
-    });
-  },
+  public static async connect(uri: string): Promise<MongoHelper | null> {
+    if (!MongoHelper.client) {
+      MongoHelper.client = await MongoClient.connect(uri);
+    }
+    return MongoHelper.client;
+  }
 
-  disconnect: async () => {
-    await this.client.close();
-  },
-};
+  public static async disconnect() {
+    await this.client?.close();
+  }
+
+  public static getCollection(name: string) {
+    return this.client?.db().collection(name);
+  }
+}
