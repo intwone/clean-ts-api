@@ -16,7 +16,7 @@
   "keywords": [],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
+      "pre-commit": "lint-staged --quiet",
       "pre-push": "npm run test:ci"
     }
   },
