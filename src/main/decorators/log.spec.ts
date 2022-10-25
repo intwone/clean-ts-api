@@ -1,5 +1,6 @@
 import { LogErrorRepositoryProtocol } from '../../data/protocols/log-error-repository';
-import { serverError } from '../../presentation/helpers/http-helper';
+import { AccountModelProtocol } from '../../domain/models/account';
+import { serverError, success } from '../../presentation/helpers/http-helper';
 import { ControllerProtocol, HttpRequestProtocol, HttpResponseProtocol } from '../../presentation/protocols';
 import { LogControllerDecorator } from './log';
 
@@ -8,6 +9,29 @@ interface SutProtocol {
   controllerStub: ControllerProtocol;
   logErrorRepositoryStub: LogErrorRepositoryProtocol;
 }
+
+const makeFakeServerError = (): HttpResponseProtocol => {
+  const fakeError = new Error();
+  fakeError.stack = 'any_stack';
+  const error = serverError(fakeError);
+  return error;
+};
+
+const makeFakeRequest = (): HttpRequestProtocol => ({
+  body: {
+    name: 'any_name',
+    email: 'any_email@mail.com',
+    password: 'any_password',
+    passwordConfirmation: 'any_password',
+  },
+});
+
+const makeFakeAccount = (): AccountModelProtocol => ({
+  id: 'any_id',
+  name: 'any_name',
+  email: 'any_email@mail.com',
+  password: 'any_password',
+});
 
 const makeLogErrorRepository = (): LogErrorRepositoryProtocol => {
   class LogErrorRepositoryStub implements LogErrorRepositoryProtocol {
@@ -23,13 +47,8 @@ const makeLogErrorRepository = (): LogErrorRepositoryProtocol => {
 const makeController = (): ControllerProtocol => {
   class ControllerStub implements ControllerProtocol {
     handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
-      const httpResponse: HttpResponseProtocol = {
-        statusCode: 200,
-        body: {
-          name: 'any_name',
-        },
-      };
-      return new Promise(resolve => resolve(httpResponse));
+      const fakeAccount = makeFakeAccount();
+      return new Promise(resolve => resolve(success(fakeAccount)));
     }
   }
   const controllerStub = new ControllerStub();
@@ -51,14 +70,7 @@ describe('LogControllerDecorator', () => {
   it('should call controller handle', async () => {
     const { sut, controllerStub } = makeSut();
     const handleSpy = jest.spyOn(controllerStub, 'handle');
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        name: 'any_name',
-        password: 'any_password',
-        passwordconfirmation: 'any_password',
-      },
-    };
+    const httpRequest = makeFakeRequest();
     await sut.handle(httpRequest);
 
     expect(handleSpy).toHaveBeenCalledWith(httpRequest);
@@ -66,39 +78,19 @@ describe('LogControllerDecorator', () => {
 
   it('should return the same result of the controller', async () => {
     const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        name: 'any_name',
-        password: 'any_password',
-        passwordconfirmation: 'any_password',
-      },
-    };
+    const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
+    const fakeAccount = makeFakeAccount();
 
-    expect(httpResponse).toEqual({
-      statusCode: 200,
-      body: {
-        name: 'any_name',
-      },
-    });
+    expect(httpResponse).toEqual(success(fakeAccount));
   });
 
   it('should call LogErrorRepository with correct error if controller returns a server error', async () => {
     const { sut, controllerStub, logErrorRepositoryStub } = makeSut();
-    const fakeError = new Error();
-    fakeError.stack = 'any_stack';
-    const error = serverError(fakeError);
+    const error = makeFakeServerError();
     const logSpy = jest.spyOn(logErrorRepositoryStub, 'log');
     jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise(resolve => resolve(error)));
-    const httpRequest = {
-      body: {
-        email: 'any_email@mail.com',
-        name: 'any_name',
-        password: 'any_password',
-        passwordconfirmation: 'any_password',
-      },
-    };
+    const httpRequest = makeFakeRequest();
     await sut.handle(httpRequest);
 
     expect(logSpy).toHaveBeenCalledWith('any_stack');
