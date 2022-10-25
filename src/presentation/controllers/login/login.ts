@@ -5,6 +5,9 @@ import { ControllerProtocol } from '../../protocols/controller';
 
 export class LoginController implements ControllerProtocol {
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
-    return new Promise(resolve => resolve(badRequest(new MissingParamError('email'))));
+    if (!httpRequest.body.email) {
+      return new Promise(resolve => resolve(badRequest(new MissingParamError('email'))));
+    }
+    return new Promise(resolve => resolve(badRequest(new MissingParamError('password'))));
   }
 }
