@@ -2,12 +2,12 @@ import { AddAccountRepositoryProtocol } from '../../../../data/protocols/add-acc
 import { AccountModelProtocol } from '../../../../domain/models/account';
 import { AddAccountModelProtocol } from '../../../../domain/usecases/add-account';
 import { MongoHelper } from '../helpers/mongo-helper';
+import { map } from './account-mapper';
 
 export class AccountMongoRepository implements AddAccountRepositoryProtocol {
   async add(accountData: AddAccountModelProtocol): Promise<AccountModelProtocol> {
     const accountCollection = MongoHelper.getCollection('accounts');
-    const result = await accountCollection?.insertOne(accountData);
-    const id = String(result?.insertedId);
-    return { ...accountData, id };
+    await accountCollection?.insertOne(accountData);
+    return map(accountData);
   }
 }
