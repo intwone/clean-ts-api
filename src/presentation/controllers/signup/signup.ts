@@ -18,7 +18,10 @@ export class SignUpController implements ControllerProtocol {
 
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
     try {
-      this.validation.validate(httpRequest.body);
+      const error = this.validation.validate(httpRequest.body);
+      if (error) {
+        return badRequest(error);
+      }
       let response: HttpResponseProtocol | null = null;
       const { name, email, password, passwordConfirmation } = httpRequest.body;
       const requiredFields = ['name', 'password', 'passwordConfirmation', 'email'];
