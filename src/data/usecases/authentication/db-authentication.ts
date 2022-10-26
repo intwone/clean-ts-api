@@ -12,10 +12,14 @@ export class DbAuthentication implements AuthenticationProtocol {
 
   async auth({ email, password }: AuthenticationModelProtocol): Promise<string> {
     const account = await this.loadAccountByEmailRepository.load(email);
-    if (account) {
-      await this.hashComparer.compare(password, account.password);
-      await this.tokenGenerator.generate(account.id);
+    if (!account) {
+      return null as unknown as string;
     }
-    return null as unknown as string;
+    const isValidPassword = await this.hashComparer.compare(password, account.password);
+    if (!isValidPassword) {
+      return null as unknown as string;
+    }
+    const accessToken = await this.tokenGenerator.generate(account.id);
+    return accessToken;
   }
 }
