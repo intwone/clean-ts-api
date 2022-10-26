@@ -6,6 +6,6 @@ export class DbAuthentication implements AuthenticationProtocol {
 
   async auth({ email }: AuthenticationModelProtocol): Promise<string> {
     await this.loadAccountByEmailRepository.load(email);
-    return '';
+    return null as unknown as string;
   }
 }
