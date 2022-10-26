@@ -1,8 +1,7 @@
-import { AuthenticationProtocol } from '../../../domain/usecases/authentication';
 import { InvalidParamError, MissingParamError } from '../../errors';
 import { badRequest, serverError, unauthorized } from '../../helpers/http-helper';
-import { EmailValidatorProtocol, HttpRequestProtocol } from '../signup/signup-protocols';
 import { LoginController } from './login';
+import { AuthenticationProtocol, EmailValidatorProtocol, HttpRequestProtocol } from './login-protocols';
 
 interface SutProtocol {
   sut: LoginController;
