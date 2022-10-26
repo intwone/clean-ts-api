@@ -13,16 +13,18 @@ export class LoginController implements ControllerProtocol {
 
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
     try {
+      let response: HttpResponseProtocol | null = null;
       const { email, password } = httpRequest.body;
-      if (!email) {
-        return new Promise(resolve => resolve(badRequest(new MissingParamError('email'))));
-      }
-      if (!password) {
-        return new Promise(resolve => resolve(badRequest(new MissingParamError('password'))));
-      }
+      const requiredFields = ['email', 'password'];
+      requiredFields.forEach(field => {
+        if (!httpRequest.body[field]) {
+          response = badRequest(new MissingParamError(field));
+        }
+      });
+      if (response) return response;
       const isValidEmail = this.emailValidator.isValid(email);
       if (!isValidEmail) {
-        return new Promise(resolve => resolve(badRequest(new InvalidParamError('email'))));
+        return badRequest(new InvalidParamError('email'));
       }
       await this.authentication.auth(email, password);
       return { statusCode: 200, body: {} };

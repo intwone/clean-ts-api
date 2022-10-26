@@ -16,14 +16,14 @@ export class SignUpController implements ControllerProtocol {
 
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
     try {
-      let response!: HttpResponseProtocol;
+      let response: HttpResponseProtocol | null = null;
+      const { name, email, password, passwordConfirmation } = httpRequest.body;
       const requiredFields = ['name', 'password', 'passwordConfirmation', 'email'];
       requiredFields.forEach(field => {
         if (!httpRequest.body[field]) {
           response = badRequest(new MissingParamError(field));
         }
       });
-      const { name, email, password, passwordConfirmation } = httpRequest.body;
       if (response) return response;
       if (password !== passwordConfirmation) {
         response = badRequest(new InvalidParamError('passwordConfirmation'));
