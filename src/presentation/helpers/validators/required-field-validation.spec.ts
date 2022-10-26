@@ -15,7 +15,7 @@ const makeSut = (): SutProtocol => {
 describe('RequiredField Validation', () => {
   it('should return a MissingParamError if validation fails', () => {
     const { sut } = makeSut();
-    const error = sut.validate({ wrong_field: 'wrongField' });
+    const error = sut.validate({ wrong_field: 'wrong_field' });
 
     expect(error).toEqual(new MissingParamError('any_field'));
   });
