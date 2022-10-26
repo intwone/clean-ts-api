@@ -4,7 +4,7 @@ import {
   ValidationComposite,
 } from '../../../presentation/helpers/validators';
 import { EmailValidatorProtocol } from '../../../presentation/protocols/email-validator';
-import { ValidationProtocol } from '../../../presentation/protocols/validation-protocol';
+import { ValidationProtocol } from '../../../presentation/protocols/validation';
 import { makeLoginValidation } from './login-validation';
 
 jest.mock('../../../presentation/helpers/validators/validation-composite');
