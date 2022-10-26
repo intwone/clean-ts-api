@@ -1,3 +1,4 @@
+import { AuthenticationProtocol } from '../../../domain/usecases/authentication';
 import { InvalidParamError, MissingParamError } from '../../errors';
 import { badRequest, serverError } from '../../helpers/http-helper';
 import { EmailValidatorProtocol, HttpRequestProtocol } from '../signup/signup-protocols';
@@ -6,6 +7,7 @@ import { LoginController } from './login';
 interface SutProtocol {
   sut: LoginController;
   emailValidatorStub: EmailValidatorProtocol;
+  authenticationStub: AuthenticationProtocol;
 }
 
 const makeFakeRequest = (): HttpRequestProtocol => ({
@@ -14,6 +16,17 @@ const makeFakeRequest = (): HttpRequestProtocol => ({
     password: 'any_password',
   },
 });
+
+const makeAuthentication = (): AuthenticationProtocol => {
+  class AuthenticationStub implements AuthenticationProtocol {
+    async auth(email: string, password: string): Promise<string> {
+      return new Promise(resolve => resolve('any_token'));
+    }
+  }
+
+  const authenticationStub = new AuthenticationStub();
+  return authenticationStub;
+};
 
 const makeEmailValidator = (): EmailValidatorProtocol => {
   class EmailValidatorStub implements EmailValidatorProtocol {
@@ -27,11 +40,13 @@ const makeEmailValidator = (): EmailValidatorProtocol => {
 };
 
 const makeSut = (): SutProtocol => {
+  const authenticationStub = makeAuthentication();
   const emailValidatorStub = makeEmailValidator();
-  const sut = new LoginController(emailValidatorStub);
+  const sut = new LoginController(emailValidatorStub, authenticationStub);
   return {
     sut,
     emailValidatorStub,
+    authenticationStub,
   };
 };
 
@@ -87,5 +102,14 @@ describe('Login Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const authSpy = jest.spyOn(authenticationStub, 'auth');
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+
+    expect(authSpy).toHaveBeenCalledWith('any_email@mail.com', 'any_password');
   });
 });
