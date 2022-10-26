@@ -1,9 +1,12 @@
-import { AuthenticationModelProtocol } from '../../../domain/usecases/authentication';
-import { HashComparerProtocol } from '../../protocols/cryptography/hash-comparer';
-import { TokenGeneratorProtocol } from '../../protocols/cryptography/token-generator';
-import { LoadAccountByEmailRepositoryProtocol } from '../../protocols/database/load-account-by-email-repository';
-import { UpdateAccessTokenRepositoryProtocol } from '../../protocols/database/update-access-token-repository';
-import { AccountModelProtocol } from '../add-account/db-add-account-protocols';
+import {
+  AccountModelProtocol,
+  AuthenticationModelProtocol,
+  HashComparerProtocol,
+  LoadAccountByEmailRepositoryProtocol,
+  TokenGeneratorProtocol,
+  UpdateAccessTokenRepositoryProtocol,
+} from './db-authentication-protocols';
+
 import { DbAuthentication } from './db-authentication';
 
 interface SutProtocol {
