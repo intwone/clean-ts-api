@@ -22,13 +22,9 @@ export class SignUpController implements ControllerProtocol {
       if (error) {
         return badRequest(error);
       }
-      let response: HttpResponseProtocol | null = null;
-      const { name, email, password, passwordConfirmation } = httpRequest.body;
+      const response: HttpResponseProtocol | null = null;
+      const { name, email, password } = httpRequest.body;
       if (response) return response;
-      if (password !== passwordConfirmation) {
-        response = badRequest(new InvalidParamError('passwordConfirmation'));
-        return response;
-      }
       const isValidEmail = this.emailValidator.isValid(email);
       if (!isValidEmail) {
         return badRequest(new InvalidParamError('email'));
