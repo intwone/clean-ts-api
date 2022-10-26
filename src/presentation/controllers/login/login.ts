@@ -19,11 +19,11 @@ export class LoginController implements ControllerProtocol {
       let response: HttpResponseProtocol | null = null;
       const { email, password } = httpRequest.body;
       const requiredFields = ['email', 'password'];
-      requiredFields.forEach(field => {
+      for (const field of requiredFields) {
         if (!httpRequest.body[field]) {
           response = badRequest(new MissingParamError(field));
         }
-      });
+      }
       if (response) return response;
       const isValidEmail = this.emailValidator.isValid(email);
       if (!isValidEmail) {

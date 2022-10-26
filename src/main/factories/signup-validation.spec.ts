@@ -22,9 +22,10 @@ describe('SignUpValidation Factory', () => {
   it('should call ValidationComposite with all validations', async () => {
     makeSignUpValidation();
     const validations: ValidationProtocol[] = [];
-    ['name', 'email', 'password', 'passwordConfirmation'].forEach(field =>
-      validations.push(new RequiredFieldValidation(field)),
-    );
+    const requiredFields = ['name', 'email', 'password', 'passwordConfirmation'];
+    for (const field of requiredFields) {
+      validations.push(new RequiredFieldValidation(field));
+    }
     validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'));
     validations.push(new EmailValidation('email', makeEmailValidator()));
     expect(ValidationComposite).toHaveBeenLastCalledWith(validations);

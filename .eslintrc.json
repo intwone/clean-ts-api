@@ -18,8 +18,9 @@
     "no-useless-constructor": "off",
     "no-promise-executor-return": "off",
     "class-methods-use-this": "off",
-    "@typescript-eslint/no-explicit-any": "off",
     "import/no-extraneous-dependencies": "off",
+    "no-restricted-syntax": "off",
+    "@typescript-eslint/no-explicit-any": "off",
     "prettier/prettier": "error",
     "import/extensions": [
       "off",
