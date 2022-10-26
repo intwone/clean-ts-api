@@ -1,5 +1,5 @@
 import { InvalidParamError } from '../../errors';
-import { ValidationProtocol } from './validation';
+import { ValidationProtocol } from './validation-protocol';
 
 export class CompareFieldsValidation implements ValidationProtocol {
   constructor(private readonly fieldName: string, private readonly fieldNameToCompare: string) {}
