@@ -1,6 +1,6 @@
 import { AuthenticationProtocol } from '../../../domain/usecases/authentication';
 import { InvalidParamError, MissingParamError } from '../../errors';
-import { badRequest, serverError } from '../../helpers/http-helper';
+import { badRequest, serverError, unauthorized } from '../../helpers/http-helper';
 import { HttpRequestProtocol, HttpResponseProtocol } from '../../protocols';
 import { ControllerProtocol } from '../../protocols/controller';
 import { EmailValidatorProtocol } from '../signup/signup-protocols';
@@ -26,7 +26,10 @@ export class LoginController implements ControllerProtocol {
       if (!isValidEmail) {
         return badRequest(new InvalidParamError('email'));
       }
-      await this.authentication.auth(email, password);
+      const accessToken = await this.authentication.auth(email, password);
+      if (!accessToken) {
+        return unauthorized();
+      }
       return { statusCode: 200, body: {} };
     } catch (error) {
       console.error(error);
