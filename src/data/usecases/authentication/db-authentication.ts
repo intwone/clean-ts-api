@@ -3,7 +3,7 @@ import {
   AuthenticationProtocol,
   HashComparerProtocol,
   LoadAccountByEmailRepositoryProtocol,
-  TokenGeneratorProtocol,
+  EncrypterProtocol,
   UpdateAccessTokenRepositoryProtocol,
 } from './db-authentication-protocols';
 
@@ -11,7 +11,7 @@ export class DbAuthentication implements AuthenticationProtocol {
   constructor(
     private readonly loadAccountByEmailRepository: LoadAccountByEmailRepositoryProtocol,
     private readonly hashComparer: HashComparerProtocol,
-    private readonly tokenGenerator: TokenGeneratorProtocol,
+    private readonly encrypter: EncrypterProtocol,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepositoryProtocol,
   ) {}
 
@@ -24,7 +24,7 @@ export class DbAuthentication implements AuthenticationProtocol {
     if (!isValidPassword) {
       return null as unknown as string;
     }
-    const accessToken = await this.tokenGenerator.generate(account.id);
+    const accessToken = await this.encrypter.encrypt(account.id);
     await this.updateAccessTokenRepository.update(account.id, accessToken);
     return accessToken;
   }
