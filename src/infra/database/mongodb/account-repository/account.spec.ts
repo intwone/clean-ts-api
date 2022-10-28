@@ -1,10 +1,17 @@
 import { Collection } from 'mongodb';
+import { AddAccountModelProtocol } from '../../../../domain/usecases/add-account';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { AccountMongoRepository } from './account';
 
 interface SutProtocol {
   sut: AccountMongoRepository;
 }
+
+const makeFakeAccount = (): AddAccountModelProtocol => ({
+  name: 'any_name',
+  email: 'any_email@mail.com',
+  password: 'any_password',
+});
 
 const makeSut = (): SutProtocol => {
   const sut = new AccountMongoRepository();
@@ -31,11 +38,8 @@ describe('Account Mongo Repository', () => {
 
   it('should return an account on add success', async () => {
     const { sut } = makeSut();
-    const account = await sut.add({
-      name: 'any_name',
-      email: 'any_email@mail.com',
-      password: 'any_password',
-    });
+    const fakeAccount = makeFakeAccount();
+    const account = await sut.add(fakeAccount);
 
     expect(account).toBeTruthy();
     expect(account.id).toBeTruthy();
@@ -45,12 +49,9 @@ describe('Account Mongo Repository', () => {
   });
 
   it('should return an account on loadByEmail success', async () => {
-    await accountCollection?.insertOne({
-      name: 'any_name',
-      email: 'any_email@mail.com',
-      password: 'any_password',
-    });
     const { sut } = makeSut();
+    const fakeAccount = makeFakeAccount();
+    await accountCollection?.insertOne(fakeAccount);
     const account = await sut.loadByEmail('any_email@mail.com');
 
     expect(account).toBeTruthy();
@@ -65,5 +66,16 @@ describe('Account Mongo Repository', () => {
     const account = await sut.loadByEmail('any_email@mail.com');
 
     expect(account).toBeFalsy();
+  });
+
+  it('should update the account accessToken on update accessToken success', async () => {
+    const { sut } = makeSut();
+    const fakeAccount: any = makeFakeAccount();
+    await accountCollection?.insertOne(fakeAccount);
+    await sut.updateAccessToken(fakeAccount._id, 'token_updated');
+    const resultAccount = await accountCollection?.findOne({ _id: fakeAccount._id });
+
+    expect(resultAccount).toBeTruthy();
+    expect(resultAccount?.accessToken).toBe('token_updated');
   });
 });
