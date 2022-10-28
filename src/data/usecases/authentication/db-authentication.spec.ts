@@ -51,7 +51,7 @@ const makeEncrypter = (): EncrypterProtocol => {
 
 const makeDbAuthentication = (): LoadAccountByEmailRepositoryProtocol => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepositoryProtocol {
-    async load(email: string): Promise<AccountModelProtocol> {
+    async loadByEmail(email: string): Promise<AccountModelProtocol> {
       const account = makeFakeAccount();
       return new Promise(resolve => resolve(account));
     }
@@ -93,7 +93,7 @@ const makeSut = (): SutProtocol => {
 describe('DbAuthentication Usecase', () => {
   it('should call LoadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'load');
+    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail');
     const fakeAuthentication = makeFakeAuthentication();
     await sut.auth(fakeAuthentication);
 
@@ -103,7 +103,7 @@ describe('DbAuthentication Usecase', () => {
   it('should throw an exception if LoadAccountByEmailRepository throw an expection', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
     jest
-      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
     const fakeAuthentication = makeFakeAuthentication();
     const promise = sut.auth(fakeAuthentication);
@@ -113,7 +113,9 @@ describe('DbAuthentication Usecase', () => {
 
   it('should return null if LoadAccountByEmailRepository return null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'load').mockReturnValueOnce(new Promise(resolve => resolve(null)));
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockReturnValueOnce(new Promise(resolve => resolve(null)));
     const fakeAuthentication = makeFakeAuthentication();
     const accessToken = await sut.auth(fakeAuthentication);
 
