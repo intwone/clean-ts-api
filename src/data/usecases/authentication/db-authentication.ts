@@ -1,9 +1,9 @@
 import {
   AuthenticationModelProtocol,
   AuthenticationProtocol,
+  EncrypterProtocol,
   HashComparerProtocol,
   LoadAccountByEmailRepositoryProtocol,
-  EncrypterProtocol,
   UpdateAccessTokenRepositoryProtocol,
 } from './db-authentication-protocols';
 
@@ -25,7 +25,7 @@ export class DbAuthentication implements AuthenticationProtocol {
       return null as unknown as string;
     }
     const accessToken = await this.encrypter.encrypt(account.id);
-    await this.updateAccessTokenRepository.update(account.id, accessToken);
+    await this.updateAccessTokenRepository.updateAccessToken(account.id, accessToken);
     return accessToken;
   }
 }

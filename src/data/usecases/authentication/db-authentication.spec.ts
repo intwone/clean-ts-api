@@ -1,9 +1,9 @@
 import {
   AccountModelProtocol,
   AuthenticationModelProtocol,
+  EncrypterProtocol,
   HashComparerProtocol,
   LoadAccountByEmailRepositoryProtocol,
-  EncrypterProtocol,
   UpdateAccessTokenRepositoryProtocol,
 } from './db-authentication-protocols';
 
@@ -62,7 +62,7 @@ const makeDbAuthentication = (): LoadAccountByEmailRepositoryProtocol => {
 
 const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepositoryProtocol => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepositoryProtocol {
-    async update(id: string, token: string): Promise<void> {
+    async updateAccessToken(id: string, token: string): Promise<void> {
       return new Promise(resolve => resolve());
     }
   }
@@ -184,7 +184,7 @@ describe('DbAuthentication Usecase', () => {
 
   it('should call UpdateAccessTokenRepository with correct values', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut();
-    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'update');
+    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken');
     const fakeAuthentication = makeFakeAuthentication();
     await sut.auth(fakeAuthentication);
 
@@ -194,7 +194,7 @@ describe('DbAuthentication Usecase', () => {
   it('should throw an exception if UpdateAccessTokenRepository throw an expection', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut();
     jest
-      .spyOn(updateAccessTokenRepositoryStub, 'update')
+      .spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
     const fakeAuthentication = makeFakeAuthentication();
     const promise = sut.auth(fakeAuthentication);

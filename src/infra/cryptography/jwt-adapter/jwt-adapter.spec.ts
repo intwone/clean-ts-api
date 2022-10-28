@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { JwtAdapter } from './jtw-adapter';
+import { JwtAdapter } from './jwt-adapter';
 
 jest.mock('jsonwebtoken', () => ({
   sign: async (): Promise<string> => {
