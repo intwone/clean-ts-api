@@ -5,7 +5,7 @@ import {
   HttpRequestProtocol,
   HttpResponseProtocol,
   ValidationProtocol,
-} from './signup-protocols';
+} from './signup-controller-protocols';
 
 export class SignUpController implements ControllerProtocol {
   constructor(private readonly addAccount: AddAccountProtocol, private readonly validation: ValidationProtocol) {}

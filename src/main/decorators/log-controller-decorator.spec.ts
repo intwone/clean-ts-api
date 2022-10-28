@@ -1,8 +1,8 @@
-import { LogErrorRepositoryProtocol } from '../../data/protocols/database/log-error-repository';
+import { LogErrorRepositoryProtocol } from '../../data/protocols/database/log/log-error-repository';
 import { AccountModelProtocol } from '../../domain/models/account';
 import { serverError, success } from '../../presentation/helpers/http/http-helper';
 import { ControllerProtocol, HttpRequestProtocol, HttpResponseProtocol } from '../../presentation/protocols';
-import { LogControllerDecorator } from './log';
+import { LogControllerDecorator } from './log-controller-decorator';
 
 interface SutProtocol {
   sut: LogControllerDecorator;

@@ -1,8 +1,8 @@
 import { MissingParamError } from '../../errors';
 import { badRequest, serverError, success, unauthorized } from '../../helpers/http/http-helper';
-import { ValidationProtocol } from '../signup/signup-protocols';
-import { LoginController } from './login';
-import { AuthenticationModelProtocol, AuthenticationProtocol, HttpRequestProtocol } from './login-protocols';
+import { ValidationProtocol } from '../signup/signup-controller-protocols';
+import { LoginController } from './login-controller';
+import { AuthenticationModelProtocol, AuthenticationProtocol, HttpRequestProtocol } from './login-controller-protocols';
 
 interface SutProtocol {
   sut: LoginController;

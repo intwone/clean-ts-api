@@ -1,13 +1,13 @@
 import { MissingParamError, ServerError } from '../../errors';
 import { badRequest, serverError, success } from '../../helpers/http/http-helper';
-import { SignUpController } from './signup';
+import { SignUpController } from './signup-controller';
 import {
   AccountModelProtocol,
   AddAccountModelProtocol,
   AddAccountProtocol,
   HttpRequestProtocol,
   ValidationProtocol,
-} from './signup-protocols';
+} from './signup-controller-protocols';
 
 interface SutProtocol {
   sut: SignUpController;

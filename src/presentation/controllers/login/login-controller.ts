@@ -5,7 +5,7 @@ import {
   HttpRequestProtocol,
   HttpResponseProtocol,
   ValidationProtocol,
-} from './login-protocols';
+} from './login-controller-protocols';
 
 export class LoginController implements ControllerProtocol {
   constructor(
