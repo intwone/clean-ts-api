@@ -1,10 +1,14 @@
+import { hash } from 'bcrypt';
+import { Collection } from 'mongodb';
 import request from 'supertest';
 import { MongoHelper } from '../../infra/database/mongodb/helpers/mongo-helper';
 import app from '../config/app';
 
+let accountCollection: Collection | undefined;
+
 describe('Login Routes', () => {
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('accounts');
+    accountCollection = MongoHelper.getCollection('accounts');
     await accountCollection?.deleteMany({});
   });
 
@@ -31,14 +35,18 @@ describe('Login Routes', () => {
   });
 
   describe('POST /login', () => {
-    it('should return 200 on signup', async () => {
+    it('should return 200 on login', async () => {
+      const password = await hash('any_password', 12);
+      await accountCollection?.insertOne({
+        name: 'any_name',
+        email: 'any_email@gmail.com',
+        password,
+      });
       await request(app)
-        .post('/api/signup')
+        .post('/api/login')
         .send({
-          name: 'any_name',
           email: 'any_email@gmail.com',
           password: 'any_password',
-          passwordConfirmation: 'any_password',
         })
         .expect(200);
     });
