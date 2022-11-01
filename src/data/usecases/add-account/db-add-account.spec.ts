@@ -31,7 +31,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepositoryProtoco
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepositoryProtocol {
     async loadByEmail(email: string): Promise<AccountModelProtocol> {
       const account = makeFakeAccount();
-      return new Promise(resolve => resolve(account));
+      return new Promise(resolve => resolve(null as unknown as AccountModelProtocol));
     }
   }
   const loadAccountByEmailRepositoryStub = new LoadAccountByEmailRepositoryStub();
@@ -129,5 +129,16 @@ describe('DbAddaccount Usecase', () => {
     await sut.add(fakeAccount);
 
     expect(loadSpy).toHaveBeenCalledWith('valid@mail.com');
+  });
+
+  it('should return null if LoadAccountByEmailRepository not returns null', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockReturnValue(new Promise(resolve => resolve(makeFakeAccount())));
+    const accountData = makeFakeAccountData();
+    const account = await sut.add(accountData);
+
+    expect(account).toBeNull();
   });
 });
