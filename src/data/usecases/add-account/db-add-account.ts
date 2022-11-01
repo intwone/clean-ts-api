@@ -15,12 +15,15 @@ export class DbAddAccount implements AddAccountProtocol {
   ) {}
 
   async add(accountData: AddAccountModelProtocol): Promise<AccountModelProtocol> {
-    await this.loadAccountByEmailRepository.loadByEmail(accountData.email);
-    const hashedPassword = await this.hasher.hash(accountData.password);
-    const account = await this.addAccountRepository.add({
-      ...accountData,
-      password: hashedPassword,
-    });
-    return account;
+    const account = await this.loadAccountByEmailRepository.loadByEmail(accountData.email);
+    if (!account) {
+      const hashedPassword = await this.hasher.hash(accountData.password);
+      const newAccount = await this.addAccountRepository.add({
+        ...accountData,
+        password: hashedPassword,
+      });
+      return newAccount;
+    }
+    return null as unknown as AccountModelProtocol;
   }
 }
