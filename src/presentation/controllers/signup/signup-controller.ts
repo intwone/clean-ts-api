@@ -22,13 +22,13 @@ export class SignUpController implements ControllerProtocol {
         return badRequest(error);
       }
       const { name, email, password } = httpRequest.body;
-      const account = await this.addAccount.add({
+      await this.addAccount.add({
         name,
         email,
         password,
       });
-      await this.authentication.auth({ email, password });
-      return success(account);
+      const accessToken = await this.authentication.auth({ email, password });
+      return success({ accessToken });
     } catch (error) {
       return serverError(error);
     }
