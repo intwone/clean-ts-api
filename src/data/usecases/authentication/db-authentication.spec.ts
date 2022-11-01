@@ -49,7 +49,7 @@ const makeEncrypter = (): EncrypterProtocol => {
   return encrypterStub;
 };
 
-const makeDbAuthentication = (): LoadAccountByEmailRepositoryProtocol => {
+const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepositoryProtocol => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepositoryProtocol {
     async loadByEmail(email: string): Promise<AccountModelProtocol> {
       const account = makeFakeAccount();
@@ -71,7 +71,7 @@ const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepositoryProtocol 
 };
 
 const makeSut = (): SutProtocol => {
-  const loadAccountByEmailRepositoryStub = makeDbAuthentication();
+  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
   const hashComparerStub = makeHashComparer();
   const encrypterStub = makeEncrypter();
   const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository();
