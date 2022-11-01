@@ -26,7 +26,6 @@ export class LoginController implements ControllerProtocol {
       }
       return success({ accessToken });
     } catch (error) {
-      console.error(error);
       return serverError(error);
     }
   }

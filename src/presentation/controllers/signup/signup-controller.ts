@@ -1,6 +1,7 @@
 import { badRequest, serverError, success } from '../../helpers/http/http-helper';
 import {
   AddAccountProtocol,
+  AuthenticationProtocol,
   ControllerProtocol,
   HttpRequestProtocol,
   HttpResponseProtocol,
@@ -8,7 +9,11 @@ import {
 } from './signup-controller-protocols';
 
 export class SignUpController implements ControllerProtocol {
-  constructor(private readonly addAccount: AddAccountProtocol, private readonly validation: ValidationProtocol) {}
+  constructor(
+    private readonly addAccount: AddAccountProtocol,
+    private readonly validation: ValidationProtocol,
+    private readonly authentication: AuthenticationProtocol,
+  ) {}
 
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
     try {
@@ -22,9 +27,9 @@ export class SignUpController implements ControllerProtocol {
         email,
         password,
       });
+      await this.authentication.auth({ email, password });
       return success(account);
     } catch (error) {
-      console.error(error);
       return serverError(error);
     }
   }
