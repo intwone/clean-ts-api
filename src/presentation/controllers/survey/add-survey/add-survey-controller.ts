@@ -1,3 +1,4 @@
+import { badRequest } from '../../../helpers/http/http-helper';
 import {
   ControllerProtocol,
   HttpRequestProtocol,
@@ -9,7 +10,10 @@ export class AddSurveyController implements ControllerProtocol {
   constructor(private readonly validation: ValidationProtocol) {}
 
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
-    this.validation.validate(httpRequest.body);
+    const error = this.validation.validate(httpRequest.body);
+    if (error) {
+      return badRequest(error);
+    }
     return new Promise(resolve => resolve(null as unknown as HttpResponseProtocol));
   }
 }
