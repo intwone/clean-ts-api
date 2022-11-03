@@ -1,11 +1,16 @@
-import { HttpRequestProtocol } from './add-survey-controller-protocols';
+import {
+  HttpRequestProtocol,
+  AddSurveyModelProtocol,
+  AddSurveyProtocol,
+  ValidationProtocol,
+} from './add-survey-controller-protocols';
 import { AddSurveyController } from './add-survey-controller';
-import { ValidationProtocol } from '../../../protocols';
 import { badRequest } from '../../../helpers/http/http-helper';
 
 interface SutProtocol {
   sut: AddSurveyController;
   validationStub: ValidationProtocol;
+  addSurveyStub: AddSurveyProtocol;
 }
 
 const makeFakeRequest = (): HttpRequestProtocol => ({
@@ -20,6 +25,16 @@ const makeFakeRequest = (): HttpRequestProtocol => ({
   },
 });
 
+const makeAddSurvey = (): AddSurveyProtocol => {
+  class AddSurveyStub implements AddSurveyProtocol {
+    async add(data: AddSurveyModelProtocol): Promise<void> {
+      return new Promise(resolve => resolve());
+    }
+  }
+  const addSurveyStub = new AddSurveyStub();
+  return addSurveyStub;
+};
+
 const makeValidation = (): ValidationProtocol => {
   class ValidationStub implements ValidationProtocol {
     validate(input: any): Error | null {
@@ -32,10 +47,12 @@ const makeValidation = (): ValidationProtocol => {
 
 const makeSut = (): SutProtocol => {
   const validationStub = makeValidation();
-  const sut = new AddSurveyController(validationStub);
+  const addSurveyStub = makeAddSurvey();
+  const sut = new AddSurveyController(validationStub, addSurveyStub);
   return {
     sut,
     validationStub,
+    addSurveyStub,
   };
 };
 
@@ -56,5 +73,14 @@ describe('AddSurvey Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(badRequest(new Error()));
+  });
+
+  it('should call AddSurvey with correct values', async () => {
+    const { sut, addSurveyStub } = makeSut();
+    const addSpy = jest.spyOn(addSurveyStub, 'add');
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
