@@ -1,6 +1,6 @@
-import { AddSurveyModelProtocol } from './db-add-survey-protocols';
 import { AddSurveyRepositoryProtocol } from '../../protocols/database/survey/add-survey-repository';
 import { DbAddSurvey } from './db-add-survey';
+import { AddSurveyModelProtocol } from './db-add-survey-protocols';
 
 interface SutProtocol {
   sut: DbAddSurvey;
@@ -44,5 +44,16 @@ describe('DbAddSurvey Usecase', () => {
     await sut.add(fakeSurveyData);
 
     expect(addSpy).toHaveBeenCalledWith(fakeSurveyData);
+  });
+
+  it('should throw an exception if AddSurveyRepository throws', async () => {
+    const { sut, addSurveyRepositoryStub } = makeSut();
+    jest
+      .spyOn(addSurveyRepositoryStub, 'add')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
+    const fakeSurveyData = makeFakeSurveyData();
+    const promise = sut.add(fakeSurveyData);
+
+    await expect(promise).rejects.toThrow();
   });
 });
