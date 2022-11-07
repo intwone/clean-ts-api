@@ -78,8 +78,16 @@ describe('DbLoadAccountByToken Usecase', () => {
     jest
       .spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
       .mockReturnValueOnce(new Promise(resolve => resolve(null as unknown as AccountModelProtocol)));
-    const account = await sut.load('any_token');
+    const account = await sut.load('any_token', 'any_role');
 
     expect(account).toBeNull();
+  });
+
+  it('should return an account on success', async () => {
+    const { sut } = makeSut();
+    const fakeAccount = makeFakeAccount();
+    const account = await sut.load('any_token', 'any_role');
+
+    expect(account).toEqual(fakeAccount);
   });
 });
