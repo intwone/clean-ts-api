@@ -37,11 +37,10 @@ describe('Account Mongo Repository', () => {
   });
 
   describe('add()', () => {
-    it('should return an account on loadByEmail success', async () => {
+    it('should return an account on add success', async () => {
       const { sut } = makeSut();
       const fakeAccount = makeFakeAccount();
-      await accountCollection?.insertOne(fakeAccount);
-      const account = await sut.loadByEmail('any_email@mail.com');
+      const account = await sut.add(fakeAccount);
 
       expect(account).toBeTruthy();
       expect(account.id).toBeTruthy();
