@@ -13,7 +13,7 @@ const makeSut = (): SutProtocol => {
   };
 };
 
-describe.only('Log Mongo Repository', () => {
+describe('Log Mongo Repository', () => {
   let errorCollection: Collection | undefined;
 
   beforeEach(async () => {
