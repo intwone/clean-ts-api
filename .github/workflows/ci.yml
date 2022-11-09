@@ -1,0 +1,32 @@
+name: CI
+
+env:
+  NODE_VERSION: 16.15.0
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-build:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Git repository
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install modules
+        run: npm install
+
+      - name: Run test
+        run: npm run test:ci
