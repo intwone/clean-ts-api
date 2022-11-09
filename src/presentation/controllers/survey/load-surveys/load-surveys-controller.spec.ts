@@ -1,4 +1,5 @@
 import MockDate from 'mockdate';
+import { success } from '../../../helpers/http/http-helper';
 import { LoadSurveysProtocol, SurveyModelProtocol } from './load-survey-controller-protocols';
 import { LoadSurveysController } from './load-surveys-controller';
 
@@ -69,5 +70,13 @@ describe('LoadSurveys Controller', () => {
     await sut.handle({});
 
     expect(loadSpy).toHaveBeenCalled();
+  });
+
+  it('should return 200 on success', async () => {
+    const { sut } = makeSut();
+    const fakeSurveys = makeFakeSurveys();
+    const httpResponse = await sut.handle({});
+
+    expect(httpResponse).toEqual(success(fakeSurveys));
   });
 });
