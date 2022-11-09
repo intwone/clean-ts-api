@@ -1,5 +1,5 @@
-import { LoadSurveysRepositoryProtocol } from '../../protocols/database/survey/load-survey-repository';
 import { SurveyModelProtocol } from '../../../domain/models/survey';
+import { LoadSurveysRepositoryProtocol } from '../../protocols/database/survey/load-survey-repository';
 import { DbLoadSurveys } from './db-load-surveys';
 
 interface SutProtocol {
@@ -56,15 +56,8 @@ const makeSut = (): SutProtocol => {
 
 describe('DbLoadSurveys', () => {
   it('should call LoadSurveysRepository', async () => {
-    class LoadSurveysRepositoryStub implements LoadSurveysRepositoryProtocol {
-      async loadAll(): Promise<SurveyModelProtocol[]> {
-        const fakeSurveys = makeFakeSurveys();
-        return new Promise(resolve => resolve(fakeSurveys));
-      }
-    }
-    const loadSurveysRepositoryStub = new LoadSurveysRepositoryStub();
+    const { sut, loadSurveysRepositoryStub } = makeSut();
     const loadAllSpy = jest.spyOn(loadSurveysRepositoryStub, 'loadAll');
-    const sut = new DbLoadSurveys(loadSurveysRepositoryStub);
     await sut.load();
 
     expect(loadAllSpy).toHaveBeenCalled();
