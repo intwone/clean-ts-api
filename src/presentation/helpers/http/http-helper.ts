@@ -21,6 +21,11 @@ export const forbidden = (error: Error): HttpResponseProtocol => ({
   body: error,
 });
 
+export const noContent = (): HttpResponseProtocol => ({
+  statusCode: 204,
+  body: null,
+});
+
 export const success = (data: any): HttpResponseProtocol => ({
   statusCode: 200,
   body: data,
