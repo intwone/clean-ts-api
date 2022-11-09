@@ -44,12 +44,14 @@ describe('Survey Mongo Repository', () => {
     await MongoHelper.disconnect();
   });
 
-  it('should add a survey on success', async () => {
-    const { sut } = makeSut();
-    const fakeSurveyData = makeFakeSurveyData();
-    await sut.add(fakeSurveyData);
-    const survey = await surveyCollection?.findOne({ question: 'any_question' });
+  describe('add(', () => {
+    it('should add a survey on success', async () => {
+      const { sut } = makeSut();
+      const fakeSurveyData = makeFakeSurveyData();
+      await sut.add(fakeSurveyData);
+      const survey = await surveyCollection?.findOne({ question: 'any_question' });
 
-    expect(survey).toBeTruthy();
+      expect(survey).toBeTruthy();
+    });
   });
 });
