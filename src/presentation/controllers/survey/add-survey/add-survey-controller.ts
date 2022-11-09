@@ -20,6 +20,7 @@ export class AddSurveyController implements ControllerProtocol {
       await this.addSurvey.add({
         question,
         answers,
+        date: new Date(),
       });
       return noContent();
     } catch (error) {

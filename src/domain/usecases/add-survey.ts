@@ -6,6 +6,7 @@ export interface SurveyAnswerProtocol {
 export interface AddSurveyModelProtocol {
   question: string;
   answers: SurveyAnswerProtocol[];
+  date: Date;
 }
 
 export interface AddSurveyProtocol {

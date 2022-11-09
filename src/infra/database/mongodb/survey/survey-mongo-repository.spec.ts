@@ -18,6 +18,7 @@ const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
       answer: 'any_answer2',
     },
   ],
+  date: new Date(),
 });
 
 const makeSut = (): SutProtocol => {
