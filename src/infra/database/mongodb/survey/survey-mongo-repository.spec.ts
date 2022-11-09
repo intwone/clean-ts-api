@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { AddSurveyModelProtocol } from '../../../../domain/usecases/add-survey';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
@@ -44,7 +44,7 @@ describe('Survey Mongo Repository', () => {
     await MongoHelper.disconnect();
   });
 
-  describe('add(', () => {
+  describe('add()', () => {
     it('should add a survey on success', async () => {
       const { sut } = makeSut();
       const fakeSurveyData = makeFakeSurveyData();
@@ -52,6 +52,19 @@ describe('Survey Mongo Repository', () => {
       const survey = await surveyCollection?.findOne({ question: 'any_question' });
 
       expect(survey).toBeTruthy();
+    });
+  });
+
+  describe('loadAll()', () => {
+    it('should load all a survey on success', async () => {
+      const fakeSurvey = makeFakeSurveyData();
+      await surveyCollection?.insertMany([fakeSurvey, { ...fakeSurvey, _id: new ObjectId(4294967295) }]);
+
+      const { sut } = makeSut();
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(2);
+      expect(surveys[0].question).toBe('any_question');
     });
   });
 });
