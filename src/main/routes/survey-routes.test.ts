@@ -57,4 +57,10 @@ describe('Survey Routes', () => {
       await request(app).post('/api/surveys').set('x-access-token', accessToken).send(fakeSurvey).expect(204);
     });
   });
+
+  describe('GET /surveys', () => {
+    it('should return 403 on load surveys without accessToken', async () => {
+      await request(app).get('/api/surveys').expect(403);
+    });
+  });
 });
