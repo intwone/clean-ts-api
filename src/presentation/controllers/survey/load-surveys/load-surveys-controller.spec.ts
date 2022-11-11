@@ -1,5 +1,5 @@
+import { noContent, serverError, success } from '@/presentation/helpers/http/http-helper';
 import MockDate from 'mockdate';
-import { noContent, serverError, success } from '../../../helpers/http/http-helper';
 import { LoadSurveysProtocol, SurveyModelProtocol } from './load-survey-controller-protocols';
 import { LoadSurveysController } from './load-surveys-controller';
 

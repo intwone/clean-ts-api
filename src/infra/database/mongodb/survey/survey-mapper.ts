@@ -1,4 +1,4 @@
-import { SurveyModelProtocol } from '../../../../domain/models/survey';
+import { SurveyModelProtocol } from '@/domain/models/survey';
 
 export const map = (surveys: any): SurveyModelProtocol[] => {
   if (!surveys) return [];
