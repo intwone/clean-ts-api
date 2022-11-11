@@ -1,11 +1,9 @@
-export interface SurveyAnswerProtocol {
-  image?: string;
-  answer: string;
-}
+import { SurveyAnswerModelProtocol } from '../models/survey';
 
 export interface AddSurveyModelProtocol {
   question: string;
-  answers: SurveyAnswerProtocol[];
+  answers: SurveyAnswerModelProtocol[];
+  date: Date;
 }
 
 export interface AddSurveyProtocol {

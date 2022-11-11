@@ -1,4 +1,4 @@
-import { Collection } from 'mongodb';
+import { Collection, ObjectId } from 'mongodb';
 import { AddSurveyModelProtocol } from '../../../../domain/usecases/add-survey';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
@@ -18,6 +18,7 @@ const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
       answer: 'any_answer2',
     },
   ],
+  date: new Date(),
 });
 
 const makeSut = (): SutProtocol => {
@@ -43,12 +44,34 @@ describe('Survey Mongo Repository', () => {
     await MongoHelper.disconnect();
   });
 
-  it('should add a survey on success', async () => {
-    const { sut } = makeSut();
-    const fakeSurveyData = makeFakeSurveyData();
-    await sut.add(fakeSurveyData);
-    const survey = await surveyCollection?.findOne({ question: 'any_question' });
+  describe('add()', () => {
+    it('should add a survey on success', async () => {
+      const { sut } = makeSut();
+      const fakeSurveyData = makeFakeSurveyData();
+      await sut.add(fakeSurveyData);
+      const survey = await surveyCollection?.findOne({ question: 'any_question' });
 
-    expect(survey).toBeTruthy();
+      expect(survey).toBeTruthy();
+    });
+  });
+
+  describe('loadAll()', () => {
+    it('should load all a survey on success', async () => {
+      const fakeSurvey = makeFakeSurveyData();
+      await surveyCollection?.insertMany([fakeSurvey, { ...fakeSurvey, _id: new ObjectId(4294967295) }]);
+
+      const { sut } = makeSut();
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(2);
+      expect(surveys[0].question).toBe('any_question');
+    });
+
+    it('should load empty list', async () => {
+      const { sut } = makeSut();
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(0);
+    });
   });
 });

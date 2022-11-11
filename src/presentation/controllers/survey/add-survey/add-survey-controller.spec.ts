@@ -1,3 +1,4 @@
+import MockDate from 'mockdate';
 import { badRequest, noContent, serverError } from '../../../helpers/http/http-helper';
 import { AddSurveyController } from './add-survey-controller';
 import {
@@ -22,6 +23,7 @@ const makeFakeRequest = (): HttpRequestProtocol => ({
         answer: 'any_answer',
       },
     ],
+    date: new Date(),
   },
 });
 
@@ -57,6 +59,14 @@ const makeSut = (): SutProtocol => {
 };
 
 describe('AddSurvey Controller', () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   it('should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut();
     const validateSpy = jest.spyOn(validationStub, 'validate');
