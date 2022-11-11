@@ -1,5 +1,5 @@
-import { ServerError, UnauthorizedError } from '../../errors';
-import { HttpResponseProtocol } from '../../protocols/http';
+import { ServerError, UnauthorizedError } from '@/presentation/errors';
+import { HttpResponseProtocol } from '@/presentation/protocols/http';
 
 export const serverError = (error: Error): HttpResponseProtocol => ({
   statusCode: 500,
