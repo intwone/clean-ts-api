@@ -1,5 +1,5 @@
-import { AccessDeniedError } from '../errors';
-import { forbidden, serverError, success } from '../helpers/http/http-helper';
+import { AccessDeniedError } from '@/presentation/errors';
+import { forbidden, serverError, success } from '@/presentation/helpers/http/http-helper';
 import { AuthMiddleware } from './auth-middleware';
 import { AccountModelProtocol, HttpRequestProtocol, LoadAccountByTokenProtocol } from './auth-middleware-protocols';
 

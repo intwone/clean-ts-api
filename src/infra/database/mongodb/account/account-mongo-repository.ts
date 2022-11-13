@@ -4,7 +4,7 @@ import { LoadAccountByTokenRepositoryProtocol } from '@/data/protocols/database/
 import { UpdateAccessTokenRepositoryProtocol } from '@/data/protocols/database/account/update-access-token-repository';
 import { AccountModelProtocol } from '@/domain/models/account';
 import { AddAccountModelProtocol } from '@/domain/usecases/add-account';
-import { MongoHelper } from '../helpers/mongo-helper';
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { map } from './account-mapper';
 
 export class AccountMongoRepository

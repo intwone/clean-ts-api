@@ -1,7 +1,6 @@
-import { LoadSurveyByIdRepositoryProtocol } from '@/data/protocols/database/survey/load-survey-by-id-repository';
-import { SurveyModelProtocol } from '@/domain/models/survey';
 import MockDate from 'mockdate';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
+import { LoadSurveyByIdRepositoryProtocol, SurveyModelProtocol } from './db-load-survey-by-id-protocols';
 
 interface SutProtocol {
   sut: DbLoadSurveyById;

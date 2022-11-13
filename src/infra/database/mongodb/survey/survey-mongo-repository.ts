@@ -4,7 +4,7 @@ import {
   AddSurveyRepositoryProtocol,
 } from '@/data/usecases/add-survey/db-add-survey-protocols';
 import { SurveyModelProtocol } from '@/domain/models/survey';
-import { MongoHelper } from '../helpers/mongo-helper';
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { map } from './survey-mapper';
 
 export class SurveyMongoRepository implements AddSurveyRepositoryProtocol, LoadSurveysRepositoryProtocol {

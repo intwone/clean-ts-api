@@ -1,6 +1,6 @@
 import { DecrypterProtocol } from '@/data/protocols/cryptography/decrypter';
 import { LoadAccountByTokenRepositoryProtocol } from '@/data/protocols/database/account/load-account-by-token-repository';
-import { AccountModelProtocol } from '../add-account/db-add-account-protocols';
+import { AccountModelProtocol } from '@/data/usecases/add-account/db-add-account-protocols';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 
 interface SutProtocol {

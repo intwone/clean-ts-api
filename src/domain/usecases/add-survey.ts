@@ -1,4 +1,4 @@
-import { SurveyAnswerModelProtocol } from '../models/survey';
+import { SurveyAnswerModelProtocol } from '@/domain/models/survey';
 
 export interface AddSurveyModelProtocol {
   question: string;

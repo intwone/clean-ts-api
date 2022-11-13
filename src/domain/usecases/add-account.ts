@@ -1,4 +1,4 @@
-import { AccountModelProtocol } from '../models/account';
+import { AccountModelProtocol } from '@/domain/models/account';
 
 export interface AddAccountModelProtocol {
   name: string;

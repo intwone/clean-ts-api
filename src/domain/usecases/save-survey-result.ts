@@ -1,4 +1,4 @@
-import { SurveyResultModelProtocol } from '../models/survey-result';
+import { SurveyResultModelProtocol } from '@/domain/models/survey-result';
 
 export type SaveSurveyResultModelProtocol = Omit<SurveyResultModelProtocol, 'id'>;
 
