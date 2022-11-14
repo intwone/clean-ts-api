@@ -9,7 +9,7 @@ export class DbSaveSurveyResult implements SaveSurveyResultProtocol {
   constructor(private readonly saveSurveyResultRepository: SaveSurveyResultRepositoryProtocol) {}
 
   async save(data: SaveSurveyResultModelProtocol): Promise<SurveyResultModelProtocol> {
-    await this.saveSurveyResultRepository.save(data);
-    return null as unknown as SurveyResultModelProtocol;
+    const surveyResult = await this.saveSurveyResultRepository.save(data);
+    return surveyResult;
   }
 }
