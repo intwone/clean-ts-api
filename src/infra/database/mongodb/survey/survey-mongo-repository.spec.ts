@@ -59,7 +59,6 @@ describe('Survey Mongo Repository', () => {
     it('should load all a survey on success', async () => {
       const fakeSurvey = makeFakeSurveyData();
       await surveyCollection?.insertMany([fakeSurvey, { ...fakeSurvey, _id: new ObjectId(4294967295) }]);
-
       const { sut } = makeSut();
       const surveys = await sut.loadAll();
 
@@ -72,6 +71,18 @@ describe('Survey Mongo Repository', () => {
       const surveys = await sut.loadAll();
 
       expect(surveys.length).toBe(0);
+    });
+  });
+
+  describe('loadById()', () => {
+    it('should load survey by id on success', async () => {
+      const fakeSurvey = makeFakeSurveyData();
+      const result = await surveyCollection?.insertOne(fakeSurvey);
+      const id = result?.insertedId as unknown as string;
+      const { sut } = makeSut();
+      const survey = await sut.loadById(id);
+
+      expect(survey).toBeTruthy();
     });
   });
 });
