@@ -17,4 +17,17 @@ export class MongoHelper {
   public static getCollection(name: string) {
     return this.client?.db().collection(name);
   }
+
+  public static map(data: any): any {
+    if (!data) return null;
+    if (!Array.isArray(data)) {
+      const { _id, ...dataWithoutId } = data;
+      return { ...dataWithoutId, id: _id };
+    }
+    const mappedData = data.map((item: any) => {
+      const { _id, ...surveysWithoutId } = item;
+      return { ...surveysWithoutId, id: _id };
+    });
+    return mappedData;
+  }
 }
