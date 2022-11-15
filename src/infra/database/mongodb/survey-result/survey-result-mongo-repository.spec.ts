@@ -39,7 +39,7 @@ const makeFakeSurvey = async (): Promise<SurveyModelProtocol> => {
   const result = await surveyCollection?.insertOne(fakeSurveyData);
   const id = result?.insertedId;
   const survey = await surveyCollection?.findOne({ _id: id });
-  return survey as unknown as SurveyModelProtocol;
+  return MongoHelper.map(survey);
 };
 
 const makeFakeAccount = async (): Promise<AccountModelProtocol> => {
@@ -47,7 +47,7 @@ const makeFakeAccount = async (): Promise<AccountModelProtocol> => {
   const result = await accountCollection?.insertOne(fakeAccountData);
   const id = result?.insertedId;
   const account = await accountCollection?.findOne({ _id: id });
-  return account as unknown as AccountModelProtocol;
+  return MongoHelper.map(account);
 };
 
 const makeSut = (): SutProtocol => {
@@ -90,6 +90,28 @@ describe('Survey Mongo Repository', () => {
       expect(surveyResult).toBeTruthy();
       expect(surveyResult.id).toBeTruthy();
       expect(surveyResult.answer).toBe(fakeSurveyData.answers[0].answer);
+    });
+
+    it('should update survey result if its not new', async () => {
+      const { sut } = makeSut();
+      const fakeSurveyData = await makeFakeSurvey();
+      const fakeAccountData = await makeFakeAccount();
+      const result = await surveyResultCollection?.insertOne({
+        surveyId: fakeSurveyData.id,
+        accountId: fakeAccountData.id,
+        answer: fakeSurveyData.answers[0].answer,
+        date: new Date(),
+      });
+      const surveyResult = await sut.save({
+        surveyId: fakeSurveyData.id,
+        accountId: fakeAccountData.id,
+        answer: fakeSurveyData.answers[1].answer,
+        date: new Date(),
+      });
+
+      expect(surveyResult).toBeTruthy();
+      expect(surveyResult.id).toEqual(result?.insertedId);
+      expect(surveyResult.answer).toBe(fakeSurveyData.answers[1].answer);
     });
   });
 });
