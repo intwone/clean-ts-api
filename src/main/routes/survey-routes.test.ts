@@ -1,4 +1,4 @@
-import { AddSurveyModelProtocol } from '@/domain/usecases/add-survey';
+import { AddSurveyModelProtocol } from '@/domain/usecases/survey/add-survey';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import app from '@/main/config/app';
 import env from '@/main/config/env';

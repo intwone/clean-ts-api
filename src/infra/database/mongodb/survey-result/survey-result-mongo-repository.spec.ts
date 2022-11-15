@@ -1,7 +1,7 @@
 import { AccountModelProtocol } from '@/domain/models/account';
 import { SurveyModelProtocol } from '@/domain/models/survey';
-import { AddAccountModelProtocol } from '@/domain/usecases/add-account';
-import { AddSurveyModelProtocol } from '@/domain/usecases/add-survey';
+import { AddAccountModelProtocol } from '@/domain/usecases/account/add-account';
+import { AddSurveyModelProtocol } from '@/domain/usecases/survey/add-survey';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
