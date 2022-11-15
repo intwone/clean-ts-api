@@ -25,8 +25,8 @@ export class MongoHelper {
       return { ...dataWithoutId, id: _id };
     }
     const mappedData = data.map((item: any) => {
-      const { _id, ...surveysWithoutId } = item;
-      return { ...surveysWithoutId, id: _id };
+      const { _id, ...dataWithoutId } = item;
+      return { ...dataWithoutId, id: _id };
     });
     return mappedData;
   }
