@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden } from '@/presentation/helpers/http/http-helper';
+import { forbidden, serverError } from '@/presentation/helpers/http/http-helper';
 import { SaveSurveyResultController } from './save-survey-result-controller';
 import {
   HttpRequestProtocol,
@@ -69,5 +69,16 @@ describe('SaveSurvey Controller', () => {
     const httpRequest = await sut.handle(fakeRequest);
 
     expect(httpRequest).toEqual(forbidden(new InvalidParamError('surveyId')));
+  });
+
+  it('should return 500 if LoadSurveyById throw an exception', async () => {
+    const { sut, loadSurveyByIdStub } = makeSut();
+    jest
+      .spyOn(loadSurveyByIdStub, 'loadById')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
+    const fakeRequest = makeFakeRequest();
+    const httpResponse = await sut.handle(fakeRequest);
+
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
