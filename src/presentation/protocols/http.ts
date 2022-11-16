@@ -6,4 +6,5 @@ export interface HttpResponseProtocol {
 export interface HttpRequestProtocol {
   body?: any;
   headers?: any;
+  params?: any;
 }
