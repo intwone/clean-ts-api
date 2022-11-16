@@ -12,9 +12,15 @@ export class SaveSurveyResultController implements ControllerProtocol {
 
   async handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
     try {
-      const survey = await this.loadSurveyById.loadById(httpRequest.params.surveyId);
+      const { surveyId } = httpRequest.params;
+      const { answer } = httpRequest.body;
+      const survey = await this.loadSurveyById.loadById(surveyId);
       if (!survey) {
         return forbidden(new InvalidParamError('surveyId'));
+      }
+      const answers = survey.answers.map(item => item.answer);
+      if (!answers.includes(answer)) {
+        return forbidden(new InvalidParamError('answer'));
       }
       return null as unknown as HttpResponseProtocol;
     } catch (error) {
