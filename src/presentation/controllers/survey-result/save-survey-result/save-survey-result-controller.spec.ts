@@ -1,5 +1,5 @@
 import { InvalidParamError } from '@/presentation/errors';
-import { forbidden, serverError } from '@/presentation/helpers/http/http-helper';
+import { forbidden, serverError, success } from '@/presentation/helpers/http/http-helper';
 import MockDate from 'mockdate';
 import { SaveSurveyResultController } from './save-survey-result-controller';
 import {
@@ -156,5 +156,14 @@ describe('SaveSurvey Controller', () => {
     const httpResponse = await sut.handle(fakeRequest);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('should return 200 on success', async () => {
+    const { sut } = makeSut();
+    const fakeRequest = makeFakeRequest();
+    const fakeSurveyResult = makeFakeSurveyResult();
+    const httpResponse = await sut.handle(fakeRequest);
+
+    expect(httpResponse).toEqual(success(fakeSurveyResult));
   });
 });
