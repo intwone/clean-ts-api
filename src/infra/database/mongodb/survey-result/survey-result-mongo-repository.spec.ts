@@ -1,7 +1,7 @@
 import { AccountModelProtocol } from '@/domain/models/account';
 import { SurveyModelProtocol } from '@/domain/models/survey';
-import { AddAccountModelProtocol } from '@/domain/usecases/account/add-account';
-import { AddSurveyModelProtocol } from '@/domain/usecases/survey/add-survey';
+import { AddAccountParamsProtocol } from '@/domain/usecases/account/add-account';
+import { AddSurveyParamsProtocol } from '@/domain/usecases/survey/add-survey';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
@@ -14,7 +14,7 @@ interface SutProtocol {
   sut: SurveyResultMongoRepository;
 }
 
-const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
+const makeFakeSurveyData = (): AddSurveyParamsProtocol => ({
   question: 'any_question',
   answers: [
     {
@@ -28,7 +28,7 @@ const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
   date: new Date(),
 });
 
-const makeFakeAccountData = (): AddAccountModelProtocol => ({
+const makeFakeAccountData = (): AddAccountParamsProtocol => ({
   name: 'any_name',
   email: 'any_mail@email.com',
   password: 'any_password',

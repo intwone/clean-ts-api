@@ -3,9 +3,9 @@ import { badRequest, forbidden, serverError, success } from '@/presentation/help
 import { SignUpController } from './signup-controller';
 import {
   AccountModelProtocol,
-  AddAccountModelProtocol,
+  AddAccountParamsProtocol,
   AddAccountProtocol,
-  AuthenticationModelProtocol,
+  AuthenticationParamsProtocol,
   AuthenticationProtocol,
   HttpRequestProtocol,
   ValidationProtocol,
@@ -36,7 +36,7 @@ const makeFakeAccount = (): AccountModelProtocol => ({
 
 const makeAuthentication = (): AuthenticationProtocol => {
   class AuthenticationStub implements AuthenticationProtocol {
-    async auth(authentication: AuthenticationModelProtocol): Promise<string> {
+    async auth(authentication: AuthenticationParamsProtocol): Promise<string> {
       return new Promise(resolve => resolve('any_token'));
     }
   }
@@ -47,7 +47,7 @@ const makeAuthentication = (): AuthenticationProtocol => {
 
 const makeAddAccountStub = (): AddAccountProtocol => {
   class AddAccountStub implements AddAccountProtocol {
-    async add(account: AddAccountModelProtocol): Promise<AccountModelProtocol> {
+    async add(account: AddAccountParamsProtocol): Promise<AccountModelProtocol> {
       const fakeAccount = makeFakeAccount();
       return new Promise(resolve => resolve(fakeAccount));
     }

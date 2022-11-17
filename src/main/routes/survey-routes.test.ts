@@ -1,4 +1,4 @@
-import { AddSurveyModelProtocol } from '@/domain/usecases/survey/add-survey';
+import { AddSurveyParamsProtocol } from '@/domain/usecases/survey/add-survey';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import app from '@/main/config/app';
 import env from '@/main/config/env';
@@ -9,7 +9,7 @@ import request from 'supertest';
 let surveyCollection: Collection | undefined;
 let accountCollection: Collection | undefined;
 
-const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
+const makeFakeSurveyData = (): AddSurveyParamsProtocol => ({
   question: 'any_question',
   answers: [
     {

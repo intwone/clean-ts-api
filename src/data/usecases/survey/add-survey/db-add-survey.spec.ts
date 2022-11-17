@@ -1,14 +1,14 @@
 import { AddSurveyRepositoryProtocol } from '@/data/protocols/database/survey/add-survey-repository';
 import MockDate from 'mockdate';
 import { DbAddSurvey } from './db-add-survey';
-import { AddSurveyModelProtocol } from './db-add-survey-protocols';
+import { AddSurveyParamsProtocol } from './db-add-survey-protocols';
 
 interface SutProtocol {
   sut: DbAddSurvey;
   addSurveyRepositoryStub: AddSurveyRepositoryProtocol;
 }
 
-const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
+const makeFakeSurveyData = (): AddSurveyParamsProtocol => ({
   question: 'any_question',
   answers: [
     {
@@ -21,7 +21,7 @@ const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
 
 const makeAddSurveyRepositoryStub = (): AddSurveyRepositoryProtocol => {
   class AddSurveyRepositoryStub implements AddSurveyRepositoryProtocol {
-    async add(surveyData: AddSurveyModelProtocol): Promise<void> {
+    async add(surveyData: AddSurveyParamsProtocol): Promise<void> {
       return new Promise(resolve => resolve());
     }
   }

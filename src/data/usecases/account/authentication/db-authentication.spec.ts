@@ -1,6 +1,6 @@
 import {
   AccountModelProtocol,
-  AuthenticationModelProtocol,
+  AuthenticationParamsProtocol,
   EncrypterProtocol,
   HashComparerProtocol,
   LoadAccountByEmailRepositoryProtocol,
@@ -17,7 +17,7 @@ interface SutProtocol {
   updateAccessTokenRepositoryStub: UpdateAccessTokenRepositoryProtocol;
 }
 
-const makeFakeAuthentication = (): AuthenticationModelProtocol => ({
+const makeFakeAuthentication = (): AuthenticationParamsProtocol => ({
   email: 'any_email@mail.com',
   password: 'any_password',
 });

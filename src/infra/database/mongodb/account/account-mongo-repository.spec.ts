@@ -1,4 +1,4 @@
-import { AddAccountModelProtocol } from '@/domain/usecases/account/add-account';
+import { AddAccountParamsProtocol } from '@/domain/usecases/account/add-account';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { AccountMongoRepository } from './account-mongo-repository';
@@ -7,7 +7,7 @@ interface SutProtocol {
   sut: AccountMongoRepository;
 }
 
-const makeFakeAccount = (): AddAccountModelProtocol => ({
+const makeFakeAccount = (): AddAccountParamsProtocol => ({
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password',

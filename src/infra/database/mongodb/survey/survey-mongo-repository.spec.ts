@@ -1,4 +1,4 @@
-import { AddSurveyModelProtocol } from '@/domain/usecases/survey/add-survey';
+import { AddSurveyParamsProtocol } from '@/domain/usecases/survey/add-survey';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection, ObjectId } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
@@ -7,7 +7,7 @@ interface SutProtocol {
   sut: SurveyMongoRepository;
 }
 
-const makeFakeSurveyData = (): AddSurveyModelProtocol => ({
+const makeFakeSurveyData = (): AddSurveyParamsProtocol => ({
   question: 'any_question',
   answers: [
     {
