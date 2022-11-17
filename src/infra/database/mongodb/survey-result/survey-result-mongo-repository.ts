@@ -3,7 +3,7 @@ import {
   SaveSurveyResultRepositoryProtocol,
   SurveyResultModelProtocol,
 } from '@/data/usecases/survey-result/save-survey-result/db-save-survey-result-protocols';
-import { MongoHelper } from '../helpers/mongo-helper';
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepositoryProtocol {
   async save(data: SaveSurveyResultModelProtocol): Promise<SurveyResultModelProtocol> {
