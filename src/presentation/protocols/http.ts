@@ -7,4 +7,5 @@ export interface HttpRequestProtocol {
   body?: any;
   headers?: any;
   params?: any;
+  accountId?: string;
 }
