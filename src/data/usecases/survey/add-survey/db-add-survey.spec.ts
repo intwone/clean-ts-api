@@ -1,36 +1,16 @@
 import { AddSurveyRepositoryProtocol } from '@/data/protocols/database/survey/add-survey-repository';
+import { mockAddSurveyRepository } from '@/data/test/mock-db-survey';
+import { mockAddSurveyParams, throwError } from '@/domain/test';
 import MockDate from 'mockdate';
 import { DbAddSurvey } from './db-add-survey';
-import { AddSurveyParamsProtocol } from './db-add-survey-protocols';
 
 interface SutProtocol {
   sut: DbAddSurvey;
   addSurveyRepositoryStub: AddSurveyRepositoryProtocol;
 }
 
-const makeFakeSurveyData = (): AddSurveyParamsProtocol => ({
-  question: 'any_question',
-  answers: [
-    {
-      image: 'any_image',
-      answer: 'any_answer',
-    },
-  ],
-  date: new Date(),
-});
-
-const makeAddSurveyRepositoryStub = (): AddSurveyRepositoryProtocol => {
-  class AddSurveyRepositoryStub implements AddSurveyRepositoryProtocol {
-    async add(surveyData: AddSurveyParamsProtocol): Promise<void> {
-      return new Promise(resolve => resolve());
-    }
-  }
-  const addSurveyRepositoryStub = new AddSurveyRepositoryStub();
-  return addSurveyRepositoryStub;
-};
-
 const makeSut = (): SutProtocol => {
-  const addSurveyRepositoryStub = makeAddSurveyRepositoryStub();
+  const addSurveyRepositoryStub = mockAddSurveyRepository();
   const sut = new DbAddSurvey(addSurveyRepositoryStub);
   return {
     sut,
@@ -50,7 +30,7 @@ describe('DbAddSurvey Usecase', () => {
   it('should call AddSurveyRepository with correct values', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut();
     const addSpy = jest.spyOn(addSurveyRepositoryStub, 'add');
-    const fakeSurveyData = makeFakeSurveyData();
+    const fakeSurveyData = mockAddSurveyParams();
     await sut.add(fakeSurveyData);
 
     expect(addSpy).toHaveBeenCalledWith(fakeSurveyData);
@@ -58,10 +38,8 @@ describe('DbAddSurvey Usecase', () => {
 
   it('should throw an exception if AddSurveyRepository throws', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut();
-    jest
-      .spyOn(addSurveyRepositoryStub, 'add')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
-    const fakeSurveyData = makeFakeSurveyData();
+    jest.spyOn(addSurveyRepositoryStub, 'add').mockImplementationOnce(throwError);
+    const fakeSurveyData = mockAddSurveyParams();
     const promise = sut.add(fakeSurveyData);
 
     await expect(promise).rejects.toThrow();

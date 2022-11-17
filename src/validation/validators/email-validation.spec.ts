@@ -1,5 +1,6 @@
 import { InvalidParamError } from '@/presentation/errors';
 import { EmailValidatorProtocol } from '@/validation/protocols/email-validator';
+import { mockEmailValidator } from '@/validation/test';
 import { EmailValidation } from './email-validation';
 
 interface SutProtocol {
@@ -7,18 +8,8 @@ interface SutProtocol {
   emailValidatorStub: EmailValidatorProtocol;
 }
 
-const makeEmailValidator = (): EmailValidatorProtocol => {
-  class EmailvalidatorStub implements EmailValidatorProtocol {
-    isValid(email: string): boolean {
-      return true;
-    }
-  }
-  const emailValidatorStub = new EmailvalidatorStub();
-  return emailValidatorStub;
-};
-
 const makeSut = (): SutProtocol => {
-  const emailValidatorStub = makeEmailValidator();
+  const emailValidatorStub = mockEmailValidator();
   const sut = new EmailValidation('email', emailValidatorStub);
   return {
     sut,

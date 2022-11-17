@@ -1,4 +1,4 @@
-import { AddSurveyParamsProtocol } from '@/domain/usecases/survey/add-survey';
+import { mockAddSurveyParams } from '@/domain/test';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection, ObjectId } from 'mongodb';
 import { SurveyMongoRepository } from './survey-mongo-repository';
@@ -6,20 +6,6 @@ import { SurveyMongoRepository } from './survey-mongo-repository';
 interface SutProtocol {
   sut: SurveyMongoRepository;
 }
-
-const makeFakeSurveyData = (): AddSurveyParamsProtocol => ({
-  question: 'any_question',
-  answers: [
-    {
-      image: 'any_image',
-      answer: 'any_answer1',
-    },
-    {
-      answer: 'any_answer2',
-    },
-  ],
-  date: new Date(),
-});
 
 const makeSut = (): SutProtocol => {
   const sut = new SurveyMongoRepository();
@@ -47,7 +33,7 @@ describe('Survey Mongo Repository', () => {
   describe('add()', () => {
     it('should add a survey on success', async () => {
       const { sut } = makeSut();
-      const fakeSurveyData = makeFakeSurveyData();
+      const fakeSurveyData = mockAddSurveyParams();
       await sut.add(fakeSurveyData);
       const survey = await surveyCollection?.findOne({ question: 'any_question' });
 
@@ -57,7 +43,7 @@ describe('Survey Mongo Repository', () => {
 
   describe('loadAll()', () => {
     it('should load all a survey on success', async () => {
-      const fakeSurvey = makeFakeSurveyData();
+      const fakeSurvey = mockAddSurveyParams();
       await surveyCollection?.insertMany([fakeSurvey, { ...fakeSurvey, _id: new ObjectId(4294967295) }]);
       const { sut } = makeSut();
       const surveys = await sut.loadAll();
@@ -76,7 +62,7 @@ describe('Survey Mongo Repository', () => {
 
   describe('loadById()', () => {
     it('should load survey by id on success', async () => {
-      const fakeSurvey = makeFakeSurveyData();
+      const fakeSurvey = mockAddSurveyParams();
       const result = await surveyCollection?.insertOne(fakeSurvey);
       const id = result?.insertedId as unknown as string;
       const { sut } = makeSut();

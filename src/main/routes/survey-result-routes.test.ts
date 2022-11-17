@@ -8,7 +8,7 @@ import request from 'supertest';
 let surveyCollection: Collection | undefined;
 let accountCollection: Collection | undefined;
 
-const makeFakeSurveyId = async (): Promise<string> => {
+const mockSurveyId = async (): Promise<string> => {
   const result = await surveyCollection?.insertOne({
     question: 'any_question',
     answers: [
@@ -25,7 +25,7 @@ const makeFakeSurveyId = async (): Promise<string> => {
   return String(result?.insertedId);
 };
 
-const makeFakeAccessToken = async (): Promise<string> => {
+const mockAccessToken = async (): Promise<string> => {
   const result = await accountCollection?.insertOne({
     name: 'any_name',
     email: 'any_email@mail.com',
@@ -60,8 +60,8 @@ describe('Survey Routes', () => {
     });
 
     it('should return 200 on save survey result with accessToken', async () => {
-      const surveyId = await makeFakeSurveyId();
-      const accessToken = await makeFakeAccessToken();
+      const surveyId = await mockSurveyId();
+      const accessToken = await mockAccessToken();
       await request(app)
         .put(`/api/surveys/${surveyId}/results`)
         .set('x-access-token', accessToken)
