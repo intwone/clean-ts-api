@@ -1,4 +1,4 @@
-import { AccountModelProtocol } from '@/data/usecases/add-account/db-add-account-protocols';
+import { AccountModelProtocol } from '@/data/usecases/account/add-account/db-add-account-protocols';
 
 export interface LoadAccountByEmailRepositoryProtocol {
   loadByEmail: (email: string) => Promise<AccountModelProtocol>;

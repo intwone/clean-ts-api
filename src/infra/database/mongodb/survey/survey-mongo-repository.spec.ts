@@ -1,6 +1,6 @@
-import { AddSurveyModelProtocol } from '@/domain/usecases/add-survey';
+import { AddSurveyModelProtocol } from '@/domain/usecases/survey/add-survey';
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection, ObjectId } from 'mongodb';
-import { MongoHelper } from '../helpers/mongo-helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
 
 interface SutProtocol {
@@ -59,7 +59,6 @@ describe('Survey Mongo Repository', () => {
     it('should load all a survey on success', async () => {
       const fakeSurvey = makeFakeSurveyData();
       await surveyCollection?.insertMany([fakeSurvey, { ...fakeSurvey, _id: new ObjectId(4294967295) }]);
-
       const { sut } = makeSut();
       const surveys = await sut.loadAll();
 
@@ -72,6 +71,19 @@ describe('Survey Mongo Repository', () => {
       const surveys = await sut.loadAll();
 
       expect(surveys.length).toBe(0);
+    });
+  });
+
+  describe('loadById()', () => {
+    it('should load survey by id on success', async () => {
+      const fakeSurvey = makeFakeSurveyData();
+      const result = await surveyCollection?.insertOne(fakeSurvey);
+      const id = result?.insertedId as unknown as string;
+      const { sut } = makeSut();
+      const survey = await sut.loadById(id);
+
+      expect(survey).toBeTruthy();
+      expect(survey.id).toBeTruthy();
     });
   });
 });

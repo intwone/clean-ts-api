@@ -1,6 +1,6 @@
-import { AddAccountModelProtocol } from '@/domain/usecases/add-account';
+import { AddAccountModelProtocol } from '@/domain/usecases/account/add-account';
+import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
-import { MongoHelper } from '../helpers/mongo-helper';
 import { AccountMongoRepository } from './account-mongo-repository';
 
 interface SutProtocol {

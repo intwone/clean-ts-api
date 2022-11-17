@@ -1,6 +1,11 @@
 module.exports = {
   roots: ['<rootDir>/src'],
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/main/**'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/main/**',
+    '!<rootDir>/src/**/*protocols.ts',
+    '!<rootDir>/src/**/index.ts',
+  ],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
