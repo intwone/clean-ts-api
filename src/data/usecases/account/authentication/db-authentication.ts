@@ -1,5 +1,5 @@
 import {
-  AuthenticationModelProtocol,
+  AuthenticationParamsProtocol,
   AuthenticationProtocol,
   EncrypterProtocol,
   HashComparerProtocol,
@@ -15,7 +15,7 @@ export class DbAuthentication implements AuthenticationProtocol {
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepositoryProtocol,
   ) {}
 
-  async auth({ email, password }: AuthenticationModelProtocol): Promise<string> {
+  async auth({ email, password }: AuthenticationParamsProtocol): Promise<string> {
     const account = await this.loadAccountByEmailRepository.loadByEmail(email);
     if (!account) {
       return null as unknown as string;

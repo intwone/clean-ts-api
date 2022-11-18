@@ -1,5 +1,6 @@
 import { MissingParamError } from '@/presentation/errors';
 import { ValidationProtocol } from '@/presentation/protocols';
+import { mockValidation } from '@/validation/test';
 import { ValidationComposite } from './validation-composite';
 
 interface SutProtocol {
@@ -7,18 +8,8 @@ interface SutProtocol {
   validationStubs: ValidationProtocol[];
 }
 
-const makeValidation = (): ValidationProtocol => {
-  class ValidationStub implements ValidationProtocol {
-    validate(input: any): Error | null {
-      return null;
-    }
-  }
-  const validationStub = new ValidationStub();
-  return validationStub;
-};
-
 const makeSut = (): SutProtocol => {
-  const validationStubs = [makeValidation(), makeValidation()];
+  const validationStubs = [mockValidation(), mockValidation()];
   const sut = new ValidationComposite(validationStubs);
   return {
     sut,

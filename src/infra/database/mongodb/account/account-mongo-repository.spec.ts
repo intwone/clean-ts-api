@@ -1,4 +1,4 @@
-import { AddAccountModelProtocol } from '@/domain/usecases/account/add-account';
+import { mockAddAccountModel } from '@/domain/test';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 import { Collection } from 'mongodb';
 import { AccountMongoRepository } from './account-mongo-repository';
@@ -6,12 +6,6 @@ import { AccountMongoRepository } from './account-mongo-repository';
 interface SutProtocol {
   sut: AccountMongoRepository;
 }
-
-const makeFakeAccount = (): AddAccountModelProtocol => ({
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'any_password',
-});
 
 const makeSut = (): SutProtocol => {
   const sut = new AccountMongoRepository();
@@ -39,7 +33,7 @@ describe('Account Mongo Repository', () => {
   describe('add()', () => {
     it('should return an account on add success', async () => {
       const { sut } = makeSut();
-      const fakeAccount = makeFakeAccount();
+      const fakeAccount = mockAddAccountModel();
       const account = await sut.add(fakeAccount);
 
       expect(account).toBeTruthy();
@@ -53,7 +47,7 @@ describe('Account Mongo Repository', () => {
   describe('loadByEmail()', () => {
     it('should return an account on loadByEmail success', async () => {
       const { sut } = makeSut();
-      const fakeAccount = makeFakeAccount();
+      const fakeAccount = mockAddAccountModel();
       await accountCollection?.insertOne(fakeAccount);
       const account = await sut.loadByEmail('any_email@mail.com');
 
@@ -75,7 +69,7 @@ describe('Account Mongo Repository', () => {
   describe('updateAccessToken()', () => {
     it('should update the account accessToken on update accessToken success', async () => {
       const { sut } = makeSut();
-      const fakeAccount: any = makeFakeAccount();
+      const fakeAccount: any = mockAddAccountModel();
       await accountCollection?.insertOne(fakeAccount);
       await sut.updateAccessToken(fakeAccount._id, 'token_updated');
       const resultAccount = await accountCollection?.findOne({ _id: fakeAccount._id });

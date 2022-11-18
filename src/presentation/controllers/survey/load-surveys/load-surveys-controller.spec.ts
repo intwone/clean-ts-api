@@ -1,6 +1,8 @@
+import { mockSurveyModels, throwError } from '@/domain/test';
 import { noContent, serverError, success } from '@/presentation/helpers/http/http-helper';
+import { mockLoadSurveys } from '@/presentation/test';
 import MockDate from 'mockdate';
-import { LoadSurveysProtocol, SurveyModelProtocol } from './load-survey-controller-protocols';
+import { LoadSurveysProtocol } from './load-survey-controller-protocols';
 import { LoadSurveysController } from './load-surveys-controller';
 
 interface SutProtocol {
@@ -8,46 +10,8 @@ interface SutProtocol {
   loadSurveysStub: LoadSurveysProtocol;
 }
 
-const makeFakeSurveys = (): SurveyModelProtocol[] => {
-  return [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer',
-        },
-      ],
-      date: new Date(),
-    },
-    {
-      id: 'other_id',
-      question: 'other_question',
-      answers: [
-        {
-          image: 'other_image',
-          answer: 'other_answer',
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-};
-
-const makeLoadSurveys = (): LoadSurveysProtocol => {
-  class LoadSurveysStub implements LoadSurveysProtocol {
-    async load(): Promise<SurveyModelProtocol[]> {
-      const fakeSurvey = makeFakeSurveys();
-      return new Promise(resolve => resolve(fakeSurvey));
-    }
-  }
-  const loadSurveysStub = new LoadSurveysStub();
-  return loadSurveysStub;
-};
-
 const makeSut = (): SutProtocol => {
-  const loadSurveysStub = makeLoadSurveys();
+  const loadSurveysStub = mockLoadSurveys();
   const sut = new LoadSurveysController(loadSurveysStub);
   return {
     sut,
@@ -74,7 +38,7 @@ describe('LoadSurveys Controller', () => {
 
   it('should return 200 on success', async () => {
     const { sut } = makeSut();
-    const fakeSurveys = makeFakeSurveys();
+    const fakeSurveys = mockSurveyModels();
     const httpResponse = await sut.handle({});
 
     expect(httpResponse).toEqual(success(fakeSurveys));
@@ -90,7 +54,7 @@ describe('LoadSurveys Controller', () => {
 
   it('should return 500 if addSurvey throw an exception', async () => {
     const { sut, loadSurveysStub } = makeSut();
-    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())));
+    jest.spyOn(loadSurveysStub, 'load').mockImplementationOnce(throwError);
     const httpResponse = await sut.handle({});
 
     expect(httpResponse).toEqual(serverError(new Error()));

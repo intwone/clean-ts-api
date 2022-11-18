@@ -3,7 +3,7 @@ import { LoadAccountByEmailRepositoryProtocol } from '@/data/protocols/database/
 import { LoadAccountByTokenRepositoryProtocol } from '@/data/protocols/database/account/load-account-by-token-repository';
 import { UpdateAccessTokenRepositoryProtocol } from '@/data/protocols/database/account/update-access-token-repository';
 import { AccountModelProtocol } from '@/domain/models/account';
-import { AddAccountModelProtocol } from '@/domain/usecases/account/add-account';
+import { AddAccountParamsProtocol } from '@/domain/usecases/account/add-account';
 import { MongoHelper } from '@/infra/database/mongodb/helpers/mongo-helper';
 
 export class AccountMongoRepository
@@ -13,7 +13,7 @@ export class AccountMongoRepository
     UpdateAccessTokenRepositoryProtocol,
     LoadAccountByTokenRepositoryProtocol
 {
-  async add(accountData: AddAccountModelProtocol): Promise<AccountModelProtocol> {
+  async add(accountData: AddAccountParamsProtocol): Promise<AccountModelProtocol> {
     const accountCollection = MongoHelper.getCollection('accounts');
     await accountCollection?.insertOne(accountData);
     return MongoHelper.map(accountData);
