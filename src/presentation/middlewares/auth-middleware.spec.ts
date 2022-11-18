@@ -45,7 +45,7 @@ describe('Auth Middleware', () => {
     const { sut, loadAccountByTokenStub } = makeSut();
     jest
       .spyOn(loadAccountByTokenStub, 'load')
-      .mockResolvedValueOnce(new Promise(resolve => resolve(null as unknown as AccountModelProtocol)));
+      .mockResolvedValueOnce(Promise.resolve(null as unknown as AccountModelProtocol));
     const httpResponse = await sut.handle({});
 
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
@@ -61,9 +61,7 @@ describe('Auth Middleware', () => {
 
   it('should return 500 if LoadAccountByToken throw an exception', async () => {
     const { sut, loadAccountByTokenStub } = makeSut();
-    jest
-      .spyOn(loadAccountByTokenStub, 'load')
-      .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())));
+    jest.spyOn(loadAccountByTokenStub, 'load').mockResolvedValueOnce(Promise.reject(new Error()));
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
 

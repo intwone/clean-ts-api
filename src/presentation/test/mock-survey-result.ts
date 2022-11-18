@@ -9,7 +9,7 @@ export const mockSaveSurveyResult = (): SaveSurveyResultProtocol => {
   class SaveSurveyResultStub implements SaveSurveyResultProtocol {
     async save(data: SaveSurveyResultParamsProtocol): Promise<SurveyResultModelProtocol> {
       const fakeSurveyResult = mockSurveyResultModel();
-      return new Promise(resolve => resolve(fakeSurveyResult));
+      return Promise.resolve(fakeSurveyResult);
     }
   }
   const saveSurveyResultStub = new SaveSurveyResultStub();

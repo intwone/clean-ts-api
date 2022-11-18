@@ -31,7 +31,7 @@ const makeController = (): ControllerProtocol => {
   class ControllerStub implements ControllerProtocol {
     handle(httpRequest: HttpRequestProtocol): Promise<HttpResponseProtocol> {
       const fakeAccount = mockAddAccountModel();
-      return new Promise(resolve => resolve(success(fakeAccount)));
+      return Promise.resolve(success(fakeAccount));
     }
   }
   const controllerStub = new ControllerStub();
@@ -72,7 +72,7 @@ describe('LogControllerDecorator', () => {
     const { sut, controllerStub, logErrorRepositoryStub } = makeSut();
     const error = mockServerError();
     const logSpy = jest.spyOn(logErrorRepositoryStub, 'logError');
-    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(new Promise(resolve => resolve(error)));
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(error));
     const httpRequest = mockRequest();
     await sut.handle(httpRequest);
 

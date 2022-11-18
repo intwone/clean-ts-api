@@ -8,7 +8,7 @@ import { AddSurveyParamsProtocol } from '@/domain/usecases/survey/add-survey';
 export const mockAddSurveyRepository = (): AddSurveyRepositoryProtocol => {
   class AddSurveyRepositoryStub implements AddSurveyRepositoryProtocol {
     async add(surveyData: AddSurveyParamsProtocol): Promise<void> {
-      return new Promise(resolve => resolve());
+      return Promise.resolve();
     }
   }
   const addSurveyRepositoryStub = new AddSurveyRepositoryStub();
@@ -19,7 +19,7 @@ export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepositoryProtocol
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepositoryProtocol {
     async loadById(id: string): Promise<SurveyModelProtocol> {
       const fakeSurvey = mockSurveyModel();
-      return new Promise(resolve => resolve(fakeSurvey));
+      return Promise.resolve(fakeSurvey);
     }
   }
   const loadSurveysRepositoryStub = new LoadSurveyByIdRepositoryStub();
@@ -30,7 +30,7 @@ export const mockLoadSurveysRepository = (): LoadSurveysRepositoryProtocol => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepositoryProtocol {
     async loadAll(): Promise<SurveyModelProtocol[]> {
       const fakeSurveys = mockSurveyModels();
-      return new Promise(resolve => resolve(fakeSurveys));
+      return Promise.resolve(fakeSurveys);
     }
   }
   const loadSurveysRepositoryStub = new LoadSurveysRepositoryStub();

@@ -57,7 +57,7 @@ describe('SignUp Controller', () => {
   it('should return 500 if AddAccount throw an exception', async () => {
     const { sut, addAccountStub } = makeSut();
     jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
-      return new Promise((resolve, reject) => reject(new Error()));
+      return Promise.reject(new Error());
     });
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
@@ -67,9 +67,7 @@ describe('SignUp Controller', () => {
 
   it('should return 403 if AddAccount return null', async () => {
     const { sut, addAccountStub } = makeSut();
-    jest
-      .spyOn(addAccountStub, 'add')
-      .mockReturnValueOnce(new Promise(resolve => resolve(null as unknown as AccountModelProtocol)));
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(Promise.resolve(null as unknown as AccountModelProtocol));
     const httpRequest = mockRequest();
     const httpResponse = await sut.handle(httpRequest);
 

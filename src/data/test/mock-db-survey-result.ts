@@ -10,7 +10,7 @@ export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepositoryProt
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultProtocol {
     async save(data: SaveSurveyResultParamsProtocol): Promise<SurveyResultModelProtocol> {
       const surveyResult = mockSurveyResultModel();
-      return new Promise(resolve => resolve(surveyResult));
+      return Promise.resolve(surveyResult);
     }
   }
   const saveSurveyResultRepositoryStub = new SaveSurveyResultRepositoryStub();

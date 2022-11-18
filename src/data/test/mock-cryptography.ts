@@ -6,7 +6,7 @@ import { HasherProtocol } from '@/data/protocols/cryptography/hasher';
 export const mockHasher = () => {
   class HasherStub implements HasherProtocol {
     async hash(value: string): Promise<string> {
-      return new Promise(resolve => resolve('any_password'));
+      return Promise.resolve('any_password');
     }
   }
   return new HasherStub();
@@ -15,7 +15,7 @@ export const mockHasher = () => {
 export const mockDecrypter = (): DecrypterProtocol => {
   class DecrypterStub implements DecrypterProtocol {
     async decrypt(value: string): Promise<string> {
-      return new Promise(resolve => resolve('any_token'));
+      return Promise.resolve('any_token');
     }
   }
   const decrypterStub = new DecrypterStub();

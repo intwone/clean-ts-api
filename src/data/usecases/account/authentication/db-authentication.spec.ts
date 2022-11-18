@@ -66,7 +66,7 @@ describe('DbAuthentication Usecase', () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
     jest
       .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-      .mockReturnValueOnce(new Promise(resolve => resolve(null as unknown as AccountModelProtocol)));
+      .mockReturnValueOnce(Promise.resolve(null as unknown as AccountModelProtocol));
     const fakeAuthentication = mockAuthenticationParams();
     const accessToken = await sut.auth(fakeAuthentication);
 
@@ -93,7 +93,7 @@ describe('DbAuthentication Usecase', () => {
 
   it('should return null if HashComparer returns false', async () => {
     const { sut, hashComparerStub } = makeSut();
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise(resolve => resolve(false)));
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false));
     const fakeAuthentication = mockAuthenticationParams();
     const accessToken = await sut.auth(fakeAuthentication);
 
@@ -102,7 +102,7 @@ describe('DbAuthentication Usecase', () => {
 
   it('should return null if HashComparer returns false', async () => {
     const { sut, hashComparerStub } = makeSut();
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise(resolve => resolve(false)));
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false));
     const fakeAuthentication = mockAuthenticationParams();
     const compare = await sut.auth(fakeAuthentication);
 

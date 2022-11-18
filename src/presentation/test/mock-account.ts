@@ -8,7 +8,7 @@ export const mockAddAccount = (): AddAccountProtocol => {
   class AddAccountStub implements AddAccountProtocol {
     async add(account: AddAccountParamsProtocol): Promise<AccountModelProtocol> {
       const fakeAccount = mockAddAccountModel();
-      return new Promise(resolve => resolve(fakeAccount));
+      return Promise.resolve(fakeAccount);
     }
   }
   const addAccountStub = new AddAccountStub();
@@ -18,7 +18,7 @@ export const mockAddAccount = (): AddAccountProtocol => {
 export const mockAuthentication = (): AuthenticationProtocol => {
   class AuthenticationStub implements AuthenticationProtocol {
     async auth(authentication: AuthenticationParamsProtocol): Promise<string> {
-      return new Promise(resolve => resolve('any_token'));
+      return Promise.resolve('any_token');
     }
   }
 
@@ -30,7 +30,7 @@ export const mockLoadAccountByToken = (): LoadAccountByTokenProtocol => {
   class LoadAccountByTokenStub implements LoadAccountByTokenProtocol {
     async load(accessToken: string, role?: string): Promise<AccountModelProtocol> {
       const fakeAccount = mockAddAccountModel();
-      return new Promise(resolve => resolve(fakeAccount));
+      return Promise.resolve(fakeAccount);
     }
   }
   const loadAccountByTokenStub = new LoadAccountByTokenStub();
