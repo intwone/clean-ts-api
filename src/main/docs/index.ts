@@ -2,6 +2,7 @@ import { badRequest, forbidden, notFound, serverError, unauthorized } from './co
 import { loginPath, signUpPath, surveyPath } from './paths';
 import {
   accountSchema,
+  addSurveyParamsSchema,
   apiKeyAuthSchema,
   errorSchema,
   loginParamsSchema,
@@ -33,6 +34,7 @@ export default {
     survey: surveySchema,
     surveyAnswer: surveyAnswerSchema,
     signUpParams: signUpParamsSchema,
+    addSurveyParams: addSurveyParamsSchema,
   },
   components: {
     securitySchemes: {
